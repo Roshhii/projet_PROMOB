@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">Friend\'sGame</string>
+    <string name="text_welcome">Welcome to Friend\'sGame !</string>
+    <string name="button_play">Play</string>
+    <string name="text_devices">Devices:</string>
+    <string name="text_ranking">Ranking:</string>
+    <string name="text_explication"></string>
+    <string name="button_ok">OK !</string>
+    <string name="button_explication">Explanations</string>
+    <string name="button_wifi">WIFI</string>
+    <string name="button_search">Search</string>
+    <string name="text_status">Status: </string>
+    <string name="text_score">Scoreboard per round</string>
+    <string name="text_finalScore">Final score:</string>
+    <string name="text_diceGame">Shake your phone and look at your score!</string>
+</resources>

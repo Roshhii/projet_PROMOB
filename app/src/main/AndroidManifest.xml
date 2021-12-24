@@ -43,6 +43,14 @@
             android:parentActivityName=".MainActivity">
         </activity>
         <activity
+            android:name=".LoadingScreen"
+            android:parentActivityName=".MainActivity">
+        </activity>
+        <activity
+            android:name=".TapGame"
+            android:parentActivityName=".MainActivity">
+        </activity>
+        <activity
             android:name=".WelcomeActivity"
             android:exported="true">
             <intent-filter>

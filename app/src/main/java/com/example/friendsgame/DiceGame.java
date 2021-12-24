@@ -4,6 +4,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -19,6 +20,7 @@ import java.util.Random;
 
 public class DiceGame extends AppCompatActivity {
 
+    public static int GAME_COUNT = MainActivity.GAME_COUNT;
     SensorEventListener sensorEventListener;
     ImageView dice;
     TextView texte, finalScore;
@@ -55,7 +57,7 @@ public class DiceGame extends AppCompatActivity {
 
     public void init () {
         dice = (ImageView) findViewById(R.id.iv_dee);
-        finalScore = findViewById(R.id.tv_finalScore);
+        finalScore = findViewById(R.id.tv_tapScore);
         dice.setImageResource(R.drawable.dice6);
         mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
@@ -93,23 +95,23 @@ public class DiceGame extends AppCompatActivity {
                                 case 1:
                                     texte = (TextView) findViewById(R.id.tv_value3);
                                     texte.setText(Integer.toString(score));
-                                    toast.show();
                                     total += score;
+                                    toast.show();
                                     p--;
                                     break;
                                 case 2:
                                     texte = (TextView) findViewById(R.id.tv_value2);
                                     texte.setText(Integer.toString(score));
-                                    toast.show();
                                     total += score;
+                                    toast.show();
                                     p--;
                                     break;
                                 case 3:
                                     texte = (TextView) findViewById(R.id.tv_value1);
                                     if (texte != null) {
                                         texte.setText(Integer.toString(score));
-                                        toast.show();
                                         total += score;
+                                        toast.show();
                                         p--;
                                     }
                                     break;
@@ -121,7 +123,30 @@ public class DiceGame extends AppCompatActivity {
 
                             }
                             if (p == 0) {
-                                showScore(total);
+                                finalScore.setText("Final score: " + total);
+                                p = 4;
+                                score = 0;
+                                total = 0;
+                                MainActivity.GAME_COUNT--;
+                                System.out.println(MainActivity.GAME_COUNT);
+                                MainActivity.game = randomGame(1, 2);
+                                if (MainActivity.devicesConnected.size() == 0 && MainActivity.GAME_COUNT != 0) {
+                                    Intent loading = new Intent(getApplicationContext(), LoadingScreen.class);
+                                    startActivity(loading);
+                                    finish();
+                                } else {
+                                    if (MainActivity.GAME_COUNT != 0) {
+                                        Intent loading = new Intent(getApplicationContext(), LoadingScreen.class);
+                                        startActivity(loading);
+                                        finish();
+                                    } else {
+                                        /*
+                                        C'est ici que le jeu est fini
+                                         */
+                                        String msg = "{ \"type\": \"tap\", \"score\": "+ String.valueOf(total) +"  }";
+                                        MainActivity.sendReceive.write(msg.getBytes());
+                                    }
+                                }
                             }
                         } catch (InterruptedException e) {
                             e.printStackTrace();
@@ -166,6 +191,12 @@ public class DiceGame extends AppCompatActivity {
         AlertDialog dialog = builder.create();
         dialog.show();
         finalScore.setText("Final score: " + value);
+    }
+
+    public int randomGame(int borneInf, int borneSup){
+        Random rand = new Random();
+        int nb = rand.nextInt(borneSup - borneInf + 1) + borneInf;
+        return nb;
     }
 }
 

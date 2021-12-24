@@ -49,7 +49,7 @@
                     android:layout_weight="1"
                     android:fontFamily="@font/audiowide"
                     android:gravity="center_horizontal"
-                    android:text="@string/text_score"
+                    android:text="@string/text_diceTableScore"
                     android:textSize="16sp" />
 
             </TableRow>
@@ -142,13 +142,13 @@
         </TableLayout>
 
         <TextView
-            android:id="@+id/tv_finalScore"
+            android:id="@+id/tv_tapScore"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
             android:layout_marginBottom="20dp"
             android:fontFamily="@font/audiowide"
-            android:text="@string/text_finalScore"
+            android:text="@string/text_diceFinalScore"
             android:textSize="24sp" />
 
         <ImageView

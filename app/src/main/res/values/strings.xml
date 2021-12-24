@@ -10,7 +10,9 @@
     <string name="button_wifi">WIFI</string>
     <string name="button_search">Search</string>
     <string name="text_status">Status: </string>
-    <string name="text_score">Scoreboard per round</string>
-    <string name="text_finalScore">Final score:</string>
+    <string name="text_diceTableScore">Scoreboard per round</string>
+    <string name="text_diceFinalScore">Final score:</string>
     <string name="text_diceGame">Shake your phone and look at your score!</string>
+    <string name="text_tapGame">Tap the buzzer as many times as possible in 30 seconds!</string>
+    <string name="text_tapScore">Score:</string>
 </resources>

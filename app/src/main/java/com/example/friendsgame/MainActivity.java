@@ -18,7 +18,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.StrictMode;
-import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -31,6 +30,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -40,10 +42,12 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 
 public class MainActivity extends AppCompatActivity {
 
+    public static int game, GAME_COUNT = 3;
     Button play, explanations, wifi, search;
     TextView status;
     ListView devices, ranking;
@@ -55,16 +59,18 @@ public class MainActivity extends AppCompatActivity {
     BroadcastReceiver mReceiver;
     IntentFilter mIntentFilter;
 
-
     List<WifiP2pDevice> peers = new ArrayList<WifiP2pDevice>();
     String[] deviceNameArray;
+    static List<String> devicesConnected = new ArrayList<String>();
     WifiP2pDevice[] deviceArray;
     ArrayAdapter<String> adapter;
 
     static final int MESSAGE_READ = 1;
     ServerClass serverClass;
     ClientClass clientClass;
-    SendReceive sendReceive;
+    static SendReceive sendReceive;
+
+    public static int[] table_games = new int[3];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,13 +96,44 @@ public class MainActivity extends AppCompatActivity {
                 case MESSAGE_READ:
                     byte[] readBuff = (byte[]) msg.obj;
                     String tempsMsg = new String(readBuff, 0, msg.arg1);
-                    switch (tempsMsg) {
-                        case "dice":
-                            System.out.println("dice reçu");
-                            Intent diceActivity = new Intent(getApplicationContext(), DiceGame.class);
-                            startActivity(diceActivity);
-                            finish();
-                            break;
+                    System.out.println("Message recu : " + tempsMsg);
+                    try {
+                        JSONObject obj = new JSONObject(tempsMsg);
+                        String type = obj.getString("type");
+                        String number = obj.getString("number");
+                        System.out.println("type : " + type);
+                        System.out.println("number : " + number);
+                        switch (type) {
+                            /*
+                            Savoir quel jeu est lancé
+                             */
+                            case "game" :
+                                switch (number) {
+                                    case "1":
+                                        System.out.println("dice reçu");
+                                        Toast.makeText(getApplicationContext(), "dice reçu", Toast.LENGTH_LONG).show();
+                                        Intent diceActivity = new Intent(getApplicationContext(), DiceGame.class);
+                                        startActivity(diceActivity);
+                                        finish();
+                                        break;
+                                    case "2":
+                                        System.out.println("tap reçu");
+                                        Toast.makeText(getApplicationContext(), "tap reçu", Toast.LENGTH_LONG).show();
+                                        Intent tapActivity = new Intent(getApplicationContext(), TapGame.class);
+                                        startActivity(tapActivity);
+                                        finish();
+                                        break;
+                                }
+                                break;
+                            /*
+                            Faire les cas pour les jeux comme
+                            case "dice"
+                            case "tap"
+                            etc.
+                             */
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
                     break;
             }
@@ -183,6 +220,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess() {
                         Toast.makeText(getApplicationContext(), "Connected to " + device.deviceName, Toast.LENGTH_SHORT).show();
+                        devicesConnected.add(device.deviceName);
                         /*
                         Je veux changer la liste et mettre quels appareils sont connectés
                          */
@@ -198,11 +236,27 @@ public class MainActivity extends AppCompatActivity {
         play.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String msg = "dice";
-                sendReceive.write(msg.getBytes());
-                Intent diceActivity = new Intent(getApplicationContext(), DiceGame.class);
-                startActivity(diceActivity);
-                finish();
+                game = table_games[0];
+                System.out.println(game);
+                /*
+                Faire une condition pour savoir s'il y a du monde de connecté
+                Si oui, on envoie un message avec le sendReceiver
+                si non, on joue tout seul en lançant un jeu aléatoire
+                 */
+                if (devicesConnected.size() == 0) {
+                    System.out.println("Aucun device connecté");
+                    Intent loading = new Intent(getApplicationContext(), LoadingScreen.class);
+                    startActivity(loading);
+                    finish();
+                } else {
+                    System.out.println("Un ou plusieurs devices connectés");
+                    Intent loading = new Intent(getApplicationContext(), LoadingScreen.class);
+                    startActivity(loading);
+                    finish();
+                    String intGame = String.valueOf(game);
+                    String msg = "{ \"type\": \"game\", \"number\": "+ intGame+"  }";
+                    sendReceive.write(msg.getBytes());
+                }
             }
         });
     }
@@ -325,7 +379,8 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private class SendReceive extends Thread {
+    public class SendReceive extends Thread {
+        private static final int MESSAGE_READ = 1;
         private Socket socket;
         private InputStream inputStream;
         private OutputStream outputStream;
@@ -344,7 +399,6 @@ public class MainActivity extends AppCompatActivity {
         public void run() {
             byte[] buffer = new byte[1024];
             int bytes;
-
             while (socket != null) {
                 try {
                     bytes = inputStream.read(buffer);
@@ -385,5 +439,21 @@ public class MainActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
+    }
+
+    public int randomGame(int borneInf, int borneSup) {
+        Random rand = new Random();
+        int nb = rand.nextInt(borneSup - borneInf + 1) + borneInf;
+        return nb;
+    }
+
+    public static int getGame() {
+        return game;
+    }
+
+    public void games () {
+        table_games[0] = randomGame(1,2);
+        table_games[1] = randomGame(1,2);
+        table_games[2] = randomGame(1,2);
     }
 }

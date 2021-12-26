@@ -236,8 +236,10 @@ public class MainActivity extends AppCompatActivity {
         play.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                games();
                 game = table_games[0];
-                System.out.println(game);
+                System.out.println("number game : " + game);
+                System.out.println("GAME_COUNT : " + GAME_COUNT);
                 /*
                 Faire une condition pour savoir s'il y a du monde de connecté
                 Si oui, on envoie un message avec le sendReceiver

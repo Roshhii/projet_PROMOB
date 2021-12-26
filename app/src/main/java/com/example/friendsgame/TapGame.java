@@ -39,6 +39,7 @@ public class TapGame extends AppCompatActivity {
         buzzer = (ImageButton) findViewById(R.id.iv_buzzer);
         textScore = (TextView) findViewById(R.id.tv_tapTextScore);
         showToast();
+        System.out.println("GAME_COUNT : " + MainActivity.GAME_COUNT);
     }
 
     public void listeners () {
@@ -87,8 +88,12 @@ public class TapGame extends AppCompatActivity {
                         /*
                         C'est ici que le jeu est fini
                         */
-                        String msg = "{ \"type\": \"dice\", \"score\": "+ String.valueOf(count) +"  }";
-                        MainActivity.sendReceive.write(msg.getBytes());
+                        /*
+                        if (MainActivity.devicesConnected.size() != 0) {
+                            String msg = "{ \"type\": \"tap\", \"score\": "+ String.valueOf(count) +"  }";
+                            MainActivity.sendReceive.write(msg.getBytes());
+                        }
+                        */
                     }
                 }
             }

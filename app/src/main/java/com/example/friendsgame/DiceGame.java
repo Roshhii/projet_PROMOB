@@ -62,6 +62,8 @@ public class DiceGame extends AppCompatActivity {
         mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
 
+        System.out.println("GAME_COUNT : " + MainActivity.GAME_COUNT);
+
         SensorEventListener sensorEventListener = new SensorEventListener() {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
@@ -80,6 +82,8 @@ public class DiceGame extends AppCompatActivity {
                     if (dice != null) {
                         dice.setImageResource(faces[score]);
                     }
+                    Toast toast = Toast.makeText(getApplicationContext(), "SCORE :" + score+1, Toast.LENGTH_SHORT);
+                    toast.show();
                     //vibrer();
                 } else {
                     if (changeInAcceleration < 0.1 && mouvement) {
@@ -143,8 +147,12 @@ public class DiceGame extends AppCompatActivity {
                                         /*
                                         C'est ici que le jeu est fini
                                          */
-                                        String msg = "{ \"type\": \"tap\", \"score\": "+ String.valueOf(total) +"  }";
-                                        MainActivity.sendReceive.write(msg.getBytes());
+                                        /*
+                                        if (MainActivity.devicesConnected.size() != 0) {
+                                            String msg = "{ \"type\": \"dice\", \"score\": "+ String.valueOf(total) +"  }";
+                                            MainActivity.sendReceive.write(msg.getBytes());
+                                        }
+                                         */
                                     }
                                 }
                             }

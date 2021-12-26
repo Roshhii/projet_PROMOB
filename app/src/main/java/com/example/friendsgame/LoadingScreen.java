@@ -53,6 +53,10 @@ public class LoadingScreen extends AppCompatActivity {
                         break;
                 }
                 switch (game) {
+                    /*
+                    1 : DiceGame
+                    2 : TapGame
+                     */
                     case 1 :
                         Intent diceActivity = new Intent(getApplicationContext(), DiceGame.class);
                         startActivity(diceActivity);

@@ -1,6 +1,7 @@
 package com.example.friendsgame;
 
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
 import android.view.View;
@@ -18,11 +19,14 @@ public class VictoryScreen extends AppCompatActivity {
 
     TextView textVictory;
     Button btFinish;
+    private MediaPlayer mediaPlayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.victory_screen);
+
+        this.mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.victoire1);
 
         textVictory = findViewById(R.id.tv_victory);
         btFinish = findViewById(R.id.bt_finish);
@@ -40,6 +44,7 @@ public class VictoryScreen extends AppCompatActivity {
             Toast.makeText(getApplicationContext(),"Error reading file!",Toast.LENGTH_LONG).show();
             e.printStackTrace();
         }
+        mediaPlayer.start();
 
         btFinish.setOnClickListener(new View.OnClickListener() {
             @Override

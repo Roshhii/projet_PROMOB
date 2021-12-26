@@ -82,17 +82,16 @@ public class DiceGame extends AppCompatActivity {
                     if (dice != null) {
                         dice.setImageResource(faces[score]);
                     }
+                    /*
                     Toast toast = Toast.makeText(getApplicationContext(), "SCORE :" + (score+1), Toast.LENGTH_SHORT);
                     toast.show();
+                     */
                     //vibrer();
                 } else {
                     if (changeInAcceleration < 0.1 && mouvement) {
                         try {
                             Context context = getApplicationContext();
                             score += 1;
-                            CharSequence text = "SCORE :" + (score);
-                            Toast toast = Toast.makeText(context, "SCORE :" + score, Toast.LENGTH_SHORT);
-                            toast.show();
                             mouvement = false;
                             Thread.sleep(200);
                             switch (p) {
@@ -100,24 +99,22 @@ public class DiceGame extends AppCompatActivity {
                                     texte = (TextView) findViewById(R.id.tv_value3);
                                     texte.setText(Integer.toString(score));
                                     total += score;
-                                    toast.show();
+                                    Toast.makeText(getApplicationContext(), "SCORE :" + score, Toast.LENGTH_SHORT).show();
                                     p--;
                                     break;
                                 case 2:
                                     texte = (TextView) findViewById(R.id.tv_value2);
                                     texte.setText(Integer.toString(score));
                                     total += score;
-                                    toast.show();
+                                    Toast.makeText(getApplicationContext(), "SCORE :" + score, Toast.LENGTH_SHORT).show();
                                     p--;
                                     break;
                                 case 3:
                                     texte = (TextView) findViewById(R.id.tv_value1);
-                                    if (texte != null) {
-                                        texte.setText(Integer.toString(score));
-                                        total += score;
-                                        toast.show();
-                                        p--;
-                                    }
+                                    texte.setText(Integer.toString(score));
+                                    total += score;
+                                    Toast.makeText(getApplicationContext(), "SCORE :" + score, Toast.LENGTH_SHORT).show();
+                                    p--;
                                     break;
                                 case 4:
                                     p--;
@@ -147,8 +144,11 @@ public class DiceGame extends AppCompatActivity {
                                         C'est ici que le jeu est fini
                                          */
                                         if (MainActivity.devicesConnected.size() != 0) {
-                                            String msg = "{ \"type\": \"dice\", \"score\": "+ String.valueOf(total) +"  }";
-                                            MainActivity.sendReceive.write(msg.getBytes());
+                                            /*
+                                            On envoie les scores du jeu terminé
+                                             */
+                                            //String msg = "{ \"type\": \"dice\", \"score\": "+ String.valueOf(total) +"  }";
+                                            //MainActivity.sendReceive.write(msg.getBytes());
                                         } else {
                                             Intent victory = new Intent(getApplicationContext(), VictoryScreen.class);
                                             startActivity(victory);

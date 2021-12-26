@@ -100,14 +100,21 @@ public class MainActivity extends AppCompatActivity {
                     try {
                         JSONObject obj = new JSONObject(tempsMsg);
                         String type = obj.getString("type");
-                        String number = obj.getString("number");
+                        String game1 = obj.getString("game1");
+                        String game2 = obj.getString("game2");
+                        String game3 = obj.getString("game3");
                         System.out.println("type : " + type);
-                        System.out.println("number : " + number);
+                        System.out.println("Game 1 : " + game1);
+                        System.out.println("Game 2 : " + game2);
+                        System.out.println("Game 3 : " + game3);
+                        table_games[0] = Integer.parseInt(game1);
+                        table_games[1] = Integer.parseInt(game2);
+                        table_games[2] = Integer.parseInt(game3);
                         switch (type) {
                             /*
                             Savoir quel jeu est lancé
                              */
-                            case "game" :
+                           /* case "game" :
                                 switch (number) {
                                     case "1":
                                         System.out.println("dice reçu");
@@ -121,6 +128,23 @@ public class MainActivity extends AppCompatActivity {
                                         Toast.makeText(getApplicationContext(), "tap reçu", Toast.LENGTH_LONG).show();
                                         Intent tapActivity = new Intent(getApplicationContext(), TapGame.class);
                                         startActivity(tapActivity);
+                                        finish();
+                                        break;
+                                }
+                                break;*/
+                            case "start" :
+                                Intent loading = new Intent(getApplicationContext(), LoadingScreen.class);
+                                switch (game1) {
+                                    case "1":
+                                        System.out.println("dice reçu");
+                                        Toast.makeText(getApplicationContext(), "dice reçu", Toast.LENGTH_LONG).show();
+                                        startActivity(loading);
+                                        finish();
+                                        break;
+                                    case "2":
+                                        System.out.println("tap reçu");
+                                        Toast.makeText(getApplicationContext(), "tap reçu", Toast.LENGTH_LONG).show();
+                                        startActivity(loading);
                                         finish();
                                         break;
                                 }
@@ -237,7 +261,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 games();
-                game = table_games[0];
+                System.out.println("Game 1 : " + table_games[0]);
+                System.out.println("Game 2 : " + table_games[1]);
+                System.out.println("Game 3 : " + table_games[2]);
                 System.out.println("number game : " + game);
                 System.out.println("GAME_COUNT : " + GAME_COUNT);
                 /*
@@ -255,8 +281,10 @@ public class MainActivity extends AppCompatActivity {
                     Intent loading = new Intent(getApplicationContext(), LoadingScreen.class);
                     startActivity(loading);
                     finish();
-                    String intGame = String.valueOf(game);
-                    String msg = "{ \"type\": \"game\", \"number\": "+ intGame+"  }";
+                    String intGame1 = String.valueOf(table_games[0]);
+                    String intGame2 = String.valueOf(table_games[1]);
+                    String intGame3 = String.valueOf(table_games[2]);
+                    String msg = "{ \"type\": \"start\", \"game1\": "+ intGame1+", \"game2\": "+ intGame2 +", \"game3\": "+ intGame3+"}";
                     sendReceive.write(msg.getBytes());
                 }
             }

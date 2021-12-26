@@ -11,6 +11,7 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.widget.ImageView;
@@ -130,32 +131,38 @@ public class DiceGame extends AppCompatActivity {
                                 total = 0;
                                 MainActivity.GAME_COUNT--;
                                 System.out.println(MainActivity.GAME_COUNT);
-                                if (MainActivity.devicesConnected.size() == 0 && MainActivity.GAME_COUNT != 0) {
-                                    Intent loading = new Intent(getApplicationContext(), LoadingScreen.class);
-                                    startActivity(loading);
-                                    finish();
-                                } else {
-                                    if (MainActivity.GAME_COUNT != 0) {
-                                        Intent loading = new Intent(getApplicationContext(), LoadingScreen.class);
-                                        startActivity(loading);
-                                        finish();
-                                    } else {
+                                new Handler().postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        if (MainActivity.devicesConnected.size() == 0 && MainActivity.GAME_COUNT != 0) {
+                                            Intent loading = new Intent(getApplicationContext(), LoadingScreen.class);
+                                            startActivity(loading);
+                                            finish();
+                                        } else {
+                                            if (MainActivity.GAME_COUNT != 0) {
+                                                Intent loading = new Intent(getApplicationContext(), LoadingScreen.class);
+                                                startActivity(loading);
+                                                finish();
+                                            } else {
                                         /*
                                         C'est ici que le jeu est fini
                                          */
-                                        if (MainActivity.devicesConnected.size() != 0) {
+                                                if (MainActivity.devicesConnected.size() != 0) {
                                             /*
                                             On envoie les scores du jeu terminé
                                              */
-                                            //String msg = "{ \"type\": \"dice\", \"score\": "+ String.valueOf(total) +"  }";
-                                            //MainActivity.sendReceive.write(msg.getBytes());
-                                        } else {
-                                            Intent victory = new Intent(getApplicationContext(), VictoryScreen.class);
-                                            startActivity(victory);
-                                            finish();
+                                                    //String msg = "{ \"type\": \"dice\", \"score\": "+ String.valueOf(total) +"  }";
+                                                    //MainActivity.sendReceive.write(msg.getBytes());
+                                                } else {
+                                                    Intent victory = new Intent(getApplicationContext(), VictoryScreen.class);
+                                                    startActivity(victory);
+                                                    finish();
+                                                }
+                                            }
                                         }
                                     }
-                                }
+                                }, 5000);
+
                             }
                         } catch (InterruptedException e) {
                             e.printStackTrace();

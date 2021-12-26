@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Handler;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -73,29 +74,35 @@ public class TapGame extends AppCompatActivity {
                 textScore.setText("Final score:");
                 //showScore(count);
                 MainActivity.GAME_COUNT--;
-                if (MainActivity.devicesConnected.size() == 0 && MainActivity.GAME_COUNT != 0) {
-                    Intent loading = new Intent(getApplicationContext(), LoadingScreen.class);
-                    startActivity(loading);
-                    finish();
-                } else {
-                    if (MainActivity.GAME_COUNT != 0) {
-                        Intent loading = new Intent(getApplicationContext(), LoadingScreen.class);
-                        startActivity(loading);
-                        finish();
-                    } else {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (MainActivity.devicesConnected.size() == 0 && MainActivity.GAME_COUNT != 0) {
+                            Intent loading = new Intent(getApplicationContext(), LoadingScreen.class);
+                            startActivity(loading);
+                            finish();
+                        } else {
+                            if (MainActivity.GAME_COUNT != 0) {
+                                Intent loading = new Intent(getApplicationContext(), LoadingScreen.class);
+                                startActivity(loading);
+                                finish();
+                            } else {
                         /*
                         C'est ici que le jeu est fini
                         */
-                        if (MainActivity.devicesConnected.size() != 0) {
-                            String msg = "{ \"type\": \"tap\", \"score\": "+ String.valueOf(count) +"  }";
-                            MainActivity.sendReceive.write(msg.getBytes());
-                        } else {
-                            Intent victory = new Intent(getApplicationContext(), VictoryScreen.class);
-                            startActivity(victory);
-                            finish();
+                                if (MainActivity.devicesConnected.size() != 0) {
+                                    String msg = "{ \"type\": \"tap\", \"score\": "+ String.valueOf(count) +"  }";
+                                    MainActivity.sendReceive.write(msg.getBytes());
+                                } else {
+                                    Intent victory = new Intent(getApplicationContext(), VictoryScreen.class);
+                                    startActivity(victory);
+                                    finish();
+                                }
+                            }
                         }
                     }
-                }
+                }, 5000);
+
             }
         }.start();
     }

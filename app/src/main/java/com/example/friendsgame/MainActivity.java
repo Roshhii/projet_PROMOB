@@ -41,11 +41,16 @@ import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 
 public class MainActivity extends AppCompatActivity {
+
+    public String name;
+    public Map<String, Integer> scoreGamers;
 
     public static int game, GAME_COUNT = 3;
     Button play, explanations, wifi, search;
@@ -245,6 +250,7 @@ public class MainActivity extends AppCompatActivity {
                     public void onSuccess() {
                         Toast.makeText(getApplicationContext(), "Connected to " + device.deviceName, Toast.LENGTH_SHORT).show();
                         devicesConnected.add(device.deviceName);
+                        scoreGamers.put(device.deviceName, 0);
                         /*
                         Je veux changer la liste et mettre quels appareils sont connectés
                          */
@@ -318,6 +324,8 @@ public class MainActivity extends AppCompatActivity {
         mIntentFilter.addAction(WifiP2pManager.WIFI_P2P_PEERS_CHANGED_ACTION);
         mIntentFilter.addAction(WifiP2pManager.WIFI_P2P_CONNECTION_CHANGED_ACTION);
         mIntentFilter.addAction(WifiP2pManager.WIFI_P2P_THIS_DEVICE_CHANGED_ACTION);
+
+        scoreGamers = new HashMap<String, Integer>();
     }
 
     /*

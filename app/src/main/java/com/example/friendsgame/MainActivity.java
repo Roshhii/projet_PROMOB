@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
     public static int game, GAME_COUNT = 3;
     Button play, explanations, wifi, search;
     TextView status;
-    ListView devices, ranking;
+    public ListView devices, ranking;
 
     WifiManager wifiManager;
     WifiP2pManager mManager;
@@ -68,7 +68,8 @@ public class MainActivity extends AppCompatActivity {
     String[] deviceNameArray;
     static List<String> devicesConnected = new ArrayList<String>();
     WifiP2pDevice[] deviceArray;
-    ArrayAdapter<String> adapter;
+    public ArrayAdapter<String> adapter;
+    public static ArrayAdapter<String> adapterRanking;
 
     static final int MESSAGE_READ = 1;
     ServerClass serverClass;
@@ -100,6 +101,7 @@ public class MainActivity extends AppCompatActivity {
             switch (msg.what) {
                 case MESSAGE_READ:
                     byte[] readBuff = (byte[]) msg.obj;
+                    System.out.println("message : " + msg);
                     String tempsMsg = new String(readBuff, 0, msg.arg1);
                     System.out.println("Message recu : " + tempsMsg);
                     try {

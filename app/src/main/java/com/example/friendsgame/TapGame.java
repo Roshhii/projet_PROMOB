@@ -73,8 +73,6 @@ public class TapGame extends AppCompatActivity {
                 textScore.setText("Final score:");
                 //showScore(count);
                 MainActivity.GAME_COUNT--;
-                System.out.println(MainActivity.GAME_COUNT);
-                MainActivity.game = randomGame(1, 2);
                 if (MainActivity.devicesConnected.size() == 0 && MainActivity.GAME_COUNT != 0) {
                     Intent loading = new Intent(getApplicationContext(), LoadingScreen.class);
                     startActivity(loading);
@@ -88,12 +86,14 @@ public class TapGame extends AppCompatActivity {
                         /*
                         C'est ici que le jeu est fini
                         */
-                        /*
                         if (MainActivity.devicesConnected.size() != 0) {
                             String msg = "{ \"type\": \"tap\", \"score\": "+ String.valueOf(count) +"  }";
                             MainActivity.sendReceive.write(msg.getBytes());
+                        } else {
+                            Intent victory = new Intent(getApplicationContext(), VictoryScreen.class);
+                            startActivity(victory);
+                            finish();
                         }
-                        */
                     }
                 }
             }
@@ -117,11 +117,5 @@ public class TapGame extends AppCompatActivity {
         builder.setMessage(Integer.toString(value)).setTitle("Final score:");
         AlertDialog dialog = builder.create();
         dialog.show();
-    }
-
-    public int randomGame(int borneInf, int borneSup) {
-        Random rand = new Random();
-        int nb = rand.nextInt(borneSup - borneInf + 1) + borneInf;
-        return nb;
     }
 }

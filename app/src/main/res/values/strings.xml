@@ -15,4 +15,5 @@
     <string name="text_diceGame">Shake your phone and look at your score!</string>
     <string name="text_tapGame">Tap the buzzer as many times as possible in 30 seconds!</string>
     <string name="text_tapScore">Score:</string>
+    <string name="button_finish">Finish</string>
 </resources>

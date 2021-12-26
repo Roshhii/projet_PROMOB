@@ -82,7 +82,7 @@ public class DiceGame extends AppCompatActivity {
                     if (dice != null) {
                         dice.setImageResource(faces[score]);
                     }
-                    Toast toast = Toast.makeText(getApplicationContext(), "SCORE :" + score+1, Toast.LENGTH_SHORT);
+                    Toast toast = Toast.makeText(getApplicationContext(), "SCORE :" + (score+1), Toast.LENGTH_SHORT);
                     toast.show();
                     //vibrer();
                 } else {
@@ -133,7 +133,6 @@ public class DiceGame extends AppCompatActivity {
                                 total = 0;
                                 MainActivity.GAME_COUNT--;
                                 System.out.println(MainActivity.GAME_COUNT);
-                                MainActivity.game = randomGame(1, 2);
                                 if (MainActivity.devicesConnected.size() == 0 && MainActivity.GAME_COUNT != 0) {
                                     Intent loading = new Intent(getApplicationContext(), LoadingScreen.class);
                                     startActivity(loading);
@@ -147,12 +146,14 @@ public class DiceGame extends AppCompatActivity {
                                         /*
                                         C'est ici que le jeu est fini
                                          */
-                                        /*
                                         if (MainActivity.devicesConnected.size() != 0) {
                                             String msg = "{ \"type\": \"dice\", \"score\": "+ String.valueOf(total) +"  }";
                                             MainActivity.sendReceive.write(msg.getBytes());
+                                        } else {
+                                            Intent victory = new Intent(getApplicationContext(), VictoryScreen.class);
+                                            startActivity(victory);
+                                            finish();
                                         }
-                                         */
                                     }
                                 }
                             }
@@ -199,12 +200,6 @@ public class DiceGame extends AppCompatActivity {
         AlertDialog dialog = builder.create();
         dialog.show();
         finalScore.setText("Final score: " + value);
-    }
-
-    public int randomGame(int borneInf, int borneSup){
-        Random rand = new Random();
-        int nb = rand.nextInt(borneSup - borneInf + 1) + borneInf;
-        return nb;
     }
 }
 

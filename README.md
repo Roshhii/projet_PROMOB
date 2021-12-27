@@ -14,5 +14,6 @@ On a donc le buzzer et le tap qui fonctionnent.
 
 27 / 12 / 2021:
 
-Entrée d'un nom 
+Entrée d'un nom
+
 Echange des messages qui bug

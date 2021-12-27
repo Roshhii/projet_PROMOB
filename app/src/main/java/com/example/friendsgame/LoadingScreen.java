@@ -42,6 +42,17 @@ public class LoadingScreen extends AppCompatActivity {
             @Override
             public void run() {
                 switch (MainActivity.GAME_COUNT) {
+                    /*
+                    case 6 :
+                        game = MainActivity.table_games[0];
+                        break;
+                    case 5 :
+                        game = MainActivity.table_games[1];
+                        break;
+                    case 4 :
+                        game = MainActivity.table_games[2];
+                        break;
+                     */
                     case 3 :
                         game = MainActivity.table_games[0];
                         break;

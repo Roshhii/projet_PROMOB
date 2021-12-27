@@ -6,9 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.NetworkInfo;
-import android.net.wifi.WifiManager;
 import android.net.wifi.p2p.WifiP2pManager;
-import android.widget.Toast;
 
 import androidx.core.app.ActivityCompat;
 
@@ -51,7 +49,7 @@ public class WiFiDirectBroadcastReceiver extends BroadcastReceiver {
             if (networkInfo.isConnected()) {
                 mManager.requestConnectionInfo(mChannel, mActivity.connectionInfoListener);
             } else {
-                mActivity.status.setText("Status:");
+                mActivity.tvStatus.setText("Status:");
             }
         } else if (WifiP2pManager.WIFI_P2P_THIS_DEVICE_CHANGED_ACTION.equals(action)) {
 

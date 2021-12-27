@@ -22,11 +22,13 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
@@ -42,19 +44,24 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Random;
 
 
 public class MainActivity extends AppCompatActivity {
 
-    public String name;
-    public Map<String, Integer> scoreGamers;
+    public static String myName;
+    public static int myScore = 0;
+    public static Map<String, Integer> scoreGamers, stateGamers;
 
     public static int game, GAME_COUNT = 3;
-    Button play, explanations, wifi, search;
-    TextView status;
+    Button btPlay, btExplanations, btWifi, btSearch, btDone;
+    TextView tvStatus, tvName;
+    EditText etName;
+
     public ListView devices, ranking;
 
     WifiManager wifiManager;
@@ -76,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
     ClientClass clientClass;
     static SendReceive sendReceive;
 
-    public static int[] table_games = new int[3];
+    public static int[] table_games = new int[3]; //new int[6] à la fin
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,73 +103,79 @@ public class MainActivity extends AppCompatActivity {
     Récupère le message
      */
     Handler handler = new Handler(new Handler.Callback() {
+        @RequiresApi(api = Build.VERSION_CODES.N)
         @Override
         public boolean handleMessage(@NonNull Message msg) {
             switch (msg.what) {
                 case MESSAGE_READ:
                     byte[] readBuff = (byte[]) msg.obj;
-                    System.out.println("message : " + msg);
                     String tempsMsg = new String(readBuff, 0, msg.arg1);
                     System.out.println("Message recu : " + tempsMsg);
                     try {
                         JSONObject obj = new JSONObject(tempsMsg);
                         String type = obj.getString("type");
-                        String game1 = obj.getString("game1");
-                        String game2 = obj.getString("game2");
-                        String game3 = obj.getString("game3");
-                        System.out.println("type : " + type);
-                        System.out.println("Game 1 : " + game1);
-                        System.out.println("Game 2 : " + game2);
-                        System.out.println("Game 3 : " + game3);
-                        table_games[0] = Integer.parseInt(game1);
-                        table_games[1] = Integer.parseInt(game2);
-                        table_games[2] = Integer.parseInt(game3);
                         switch (type) {
-                            /*
-                            Savoir quel jeu est lancé
-                             */
-                           /* case "game" :
-                                switch (number) {
-                                    case "1":
-                                        System.out.println("dice reçu");
-                                        Toast.makeText(getApplicationContext(), "dice reçu", Toast.LENGTH_LONG).show();
-                                        Intent diceActivity = new Intent(getApplicationContext(), DiceGame.class);
-                                        startActivity(diceActivity);
-                                        finish();
-                                        break;
-                                    case "2":
-                                        System.out.println("tap reçu");
-                                        Toast.makeText(getApplicationContext(), "tap reçu", Toast.LENGTH_LONG).show();
-                                        Intent tapActivity = new Intent(getApplicationContext(), TapGame.class);
-                                        startActivity(tapActivity);
-                                        finish();
-                                        break;
-                                }
-                                break;*/
-                            case "start" :
+                            //Le jeu démarre, on récupère les différents jeux
+                            case "start":
+                                String game1 = obj.getString("game1");
+                                String game2 = obj.getString("game2");
+                                String game3 = obj.getString("game3");
+                                /*
+                                String game4 = obj.getString("game4");
+                                String game5 = obj.getString("game5");
+                                String game6 = obj.getString("game6");
+                                */
+                                System.out.println("Game 1 : " + game1);
+                                System.out.println("Game 2 : " + game2);
+                                System.out.println("Game 3 : " + game3);
+                                /*
+                                System.out.println("Game 4 : " + game4);
+                                System.out.println("Game 5 : " + game5);
+                                System.out.println("Game 6 : " + game6);
+                                */
+                                table_games[0] = Integer.parseInt(game1);
+                                table_games[1] = Integer.parseInt(game2);
+                                table_games[2] = Integer.parseInt(game3);
+                                /*
+                                table_games[3] = Integer.parseInt(game3);
+                                table_games[4] = Integer.parseInt(game4);
+                                table_games[5] = Integer.parseInt(game5);
+                                */
                                 Intent loading = new Intent(getApplicationContext(), LoadingScreen.class);
-                                switch (game1) {
-                                    case "1":
-                                        System.out.println("dice reçu");
-                                        Toast.makeText(getApplicationContext(), "dice reçu", Toast.LENGTH_LONG).show();
-                                        startActivity(loading);
-                                        finish();
-                                        break;
-                                    case "2":
-                                        System.out.println("tap reçu");
-                                        Toast.makeText(getApplicationContext(), "tap reçu", Toast.LENGTH_LONG).show();
-                                        startActivity(loading);
-                                        finish();
-                                        break;
-                                }
+                                startActivity(loading);
                                 break;
-                            /*
-                            Faire les cas pour les jeux comme
-                            case "dice"
-                            case "tap"
-                            etc.
-                             */
+                            //On récupère notre nom
+                            case "gamer":
+                                System.out.println("passé dans le gamer");
+                                myName = obj.getString("name");
+                                System.out.println("Name : " + myName);
+                                break;
+                            //Le score des joueurs
+                            case "game":
+                                String gamer = obj.getString("name");
+                                int score = Integer.parseInt(obj.getString("score"));
+                                System.out.println("Score/ "+ gamer +" : " + score);
+                                scoreGamers.replace(gamer, (scoreGamers.get(gamer)+score));
+                                break;
+                            case "finished":
+                                String gamerFinished = obj.getString("name");
+                                stateGamers.replace(gamerFinished, 1);
+                                int finalScore = Integer.parseInt(obj.getString("score"));
+                                scoreGamers.replace(gamerFinished, (scoreGamers.get(gamerFinished)+finalScore));
+                                if (allFinished()) {
+                                    if (determineWinner()) {
+                                        Intent defeat = new Intent(getApplicationContext(), DefeatScreen.class);
+                                        startActivity(defeat);
+                                        finish();
+                                    } else {
+                                        Intent victory = new Intent(getApplicationContext(), VictoryScreen.class);
+                                        startActivity(victory);
+                                        finish();
+                                    }
+                                }
                         }
+                        System.out.println("Name : " + myName);
+                        System.out.println("Gamers : " + scoreGamers);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -185,7 +198,7 @@ public class MainActivity extends AppCompatActivity {
     La gestion des boutons
      */
     private void listeners() {
-        explanations.setOnClickListener(new View.OnClickListener() {
+        btExplanations.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent welcomeActivity = new Intent(getApplicationContext(), WelcomeActivity.class);
@@ -193,19 +206,19 @@ public class MainActivity extends AppCompatActivity {
                 finish();
             }
         });
-        wifi.setOnClickListener(new View.OnClickListener() {
+        btWifi.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (wifiManager.isWifiEnabled()) {
                     wifiManager.setWifiEnabled(false);
-                    wifi.setBackgroundColor(Color.parseColor("#CF3030"));
+                    btWifi.setBackgroundColor(Color.parseColor("#CF3030"));
                 } else {
                     wifiManager.setWifiEnabled(true);
-                    wifi.setBackgroundColor(Color.parseColor("#50AE28"));
+                    btWifi.setBackgroundColor(Color.parseColor("#50AE28"));
                 }
             }
         });
-        search.setOnClickListener(new View.OnClickListener() {
+        btSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -253,6 +266,7 @@ public class MainActivity extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(), "Connected to " + device.deviceName, Toast.LENGTH_SHORT).show();
                         devicesConnected.add(device.deviceName);
                         scoreGamers.put(device.deviceName, 0);
+                        stateGamers.put(device.deviceName, 0);
                         /*
                         Je veux changer la liste et mettre quels appareils sont connectés
                          */
@@ -265,35 +279,53 @@ public class MainActivity extends AppCompatActivity {
                 });
             }
         });
-        play.setOnClickListener(new View.OnClickListener() {
+        btPlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                games();
+                generateGames();
                 System.out.println("Game 1 : " + table_games[0]);
                 System.out.println("Game 2 : " + table_games[1]);
                 System.out.println("Game 3 : " + table_games[2]);
                 System.out.println("number game : " + game);
                 System.out.println("GAME_COUNT : " + GAME_COUNT);
-                /*
-                Faire une condition pour savoir s'il y a du monde de connecté
-                Si oui, on envoie un message avec le sendReceiver
-                si non, on joue tout seul en lançant un jeu aléatoire
-                 */
                 if (devicesConnected.size() == 0) {
                     System.out.println("Aucun device connecté");
                     Intent loading = new Intent(getApplicationContext(), LoadingScreen.class);
                     startActivity(loading);
                     finish();
                 } else {
-                    System.out.println("Un ou plusieurs devices connectés");
-                    Intent loading = new Intent(getApplicationContext(), LoadingScreen.class);
-                    startActivity(loading);
-                    finish();
-                    String intGame1 = String.valueOf(table_games[0]);
-                    String intGame2 = String.valueOf(table_games[1]);
-                    String intGame3 = String.valueOf(table_games[2]);
-                    String msg = "{ \"type\": \"start\", \"game1\": "+ intGame1+", \"game2\": "+ intGame2 +", \"game3\": "+ intGame3+"}";
-                    sendReceive.write(msg.getBytes());
+                    String str = etName.getText().toString();
+                    if (str != "") {
+                        for (String gamersName : stateGamers.keySet()) {
+                            String msg = "{ \"type\": \"gamer\", \"name\": "+ gamersName+"}";
+                            System.out.println("Gamers : " + gamersName);
+                            sendReceive.write(msg.getBytes());
+                        }
+                        System.out.println("Un ou plusieurs devices connectés");
+                        Intent loading = new Intent(getApplicationContext(), LoadingScreen.class);
+                        startActivity(loading);
+                        finish();
+                        String intGame1 = String.valueOf(table_games[0]);
+                        String intGame2 = String.valueOf(table_games[1]);
+                        String intGame3 = String.valueOf(table_games[2]);
+                        String msg = "{ \"name\": "+str+"\"type\": \"start\", \"game1\": "+ intGame1+", \"game2\": "+ intGame2 +", \"game3\": "+ intGame3+"}";
+                        //\"game4\": "+ intGame4+"\"game5\": "+ intGame5+"\"game6\": "+ intGame6+"}";
+                        sendReceive.write(msg.getBytes());
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Please enter a name", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+        });
+
+        btDone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String str = etName.getText().toString();
+                if (str != "") {
+                    tvName.setText(str);
+                } else {
+                    Toast.makeText(getApplicationContext(), "Please enter a name", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -303,19 +335,22 @@ public class MainActivity extends AppCompatActivity {
     L'initialisation des composants et des outils dont on a besoin pour le WiFi P2P
      */
     private void init () {
-        play = findViewById(R.id.bt_play);
-        explanations = findViewById(R.id.bt_explanations);
-        status = findViewById(R.id.tv_status);
+        btPlay = findViewById(R.id.bt_play);
+        btExplanations = findViewById(R.id.bt_explanations);
+        tvStatus = findViewById(R.id.tv_status);
         devices = findViewById(R.id.lv_devices);
         ranking = findViewById(R.id.lv_ranking);
-        wifi = findViewById(R.id.bt_wifi);
-        search = findViewById(R.id.bt_search);
+        btWifi = findViewById(R.id.bt_wifi);
+        btSearch = findViewById(R.id.bt_search);
+        tvName = findViewById(R.id.tv_name);
+        etName = findViewById(R.id.et_name);
+        btDone = findViewById(R.id.bt_name);
 
         wifiManager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
         if (!wifiManager.isWifiEnabled()) {
-            wifi.setBackgroundColor(Color.parseColor("#CF3030"));
+            btWifi.setBackgroundColor(Color.parseColor("#CF3030"));
         } else {
-            wifi.setBackgroundColor(Color.parseColor("#50AE28"));
+            btWifi.setBackgroundColor(Color.parseColor("#50AE28"));
         }
 
         mManager = (WifiP2pManager) getSystemService(Context.WIFI_P2P_SERVICE);
@@ -328,6 +363,7 @@ public class MainActivity extends AppCompatActivity {
         mIntentFilter.addAction(WifiP2pManager.WIFI_P2P_THIS_DEVICE_CHANGED_ACTION);
 
         scoreGamers = new HashMap<String, Integer>();
+        stateGamers = new HashMap<String, Integer>();
     }
 
     /*
@@ -364,7 +400,7 @@ public class MainActivity extends AppCompatActivity {
         public void onConnectionInfoAvailable(WifiP2pInfo wifiP2pInfo) {
             final InetAddress groupOwnerAddress = wifiP2pInfo.groupOwnerAddress;
             if (wifiP2pInfo.groupFormed && wifiP2pInfo.isGroupOwner) {
-                status.setText("Status: Host");
+                tvStatus.setText("Status: Host");
                 serverClass = new ServerClass();
                 serverClass.start();
                 /*
@@ -373,20 +409,12 @@ public class MainActivity extends AppCompatActivity {
                 //adapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, deviceNameArray);
                 //devices.setAdapter(adapter);
             } else if (wifiP2pInfo.groupFormed) {
-                status.setText("Status: Client");
+                tvStatus.setText("Status: Client");
                 clientClass = new ClientClass(groupOwnerAddress);
                 clientClass.start();
                 //adapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, deviceNameArray);
                 //devices.setAdapter(adapter);
             }
-            /*
-            serverClass = new ServerClass();
-                serverClass.start();
-            } else if (wifiP2pInfo.groupFormed) {
-                connectionStatus.setText("Client");
-                clientClass = new ClientClass(groupOwnerAddress);
-                clientClass.start();
-             */
         }
     };
 
@@ -491,9 +519,52 @@ public class MainActivity extends AppCompatActivity {
         return game;
     }
 
-    public void games () {
+    public void generateGames() {
         table_games[0] = randomGame(1,2);
         table_games[1] = randomGame(1,2);
         table_games[2] = randomGame(1,2);
     }
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    public static boolean determineWinner () {
+        Iterator it = scoreGamers.keySet().iterator();
+        int winner = scoreGamers.get(it.next());
+        int tmp;
+        while (it.hasNext()) {
+            tmp = scoreGamers.get(it.next());
+            if (winner < tmp) {
+                winner = tmp;
+            }
+        }
+        return myScore < winner;
+        /*
+        if (myScore < winner) {
+            return getSingleKeyFromValue(scoreGamers, winner);
+        } else {
+            return myName;
+        }
+         */
+    }
+
+    public static boolean allFinished () {
+        for (String gamer : stateGamers.keySet()) {
+            if (stateGamers.get(gamer) == 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    public static String getSingleKeyFromValue(Map<String, Integer> map, int value) {
+        for (Map.Entry<String, Integer> entry : map.entrySet()) {
+            if (Objects.equals(value, entry.getValue())) {
+                return entry.getKey();
+            }
+        }
+        return null;
+    }
+
+
+
 }

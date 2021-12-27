@@ -86,6 +86,77 @@
 
         </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/et_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginBottom="10dp"
+                android:fontFamily="@font/alfa_slab_one"
+                android:gravity="center"
+                android:hint="Enter a name"
+                app:backgroundTint="#979494" />
+
+            <Button
+                android:id="@+id/bt_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="20dp"
+                android:layout_marginLeft="15dp"
+                android:fontFamily="@font/alfa_slab_one"
+                android:text="DONE"
+                app:backgroundTint="#979494"/>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginBottom="10dp"
+                android:fontFamily="@font/audiowide"
+                android:gravity="center"
+                android:text="Your name : "
+                android:textSize="17sp"/>
+
+            <TextView
+                android:id="@+id/tv_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginBottom="10dp"
+                android:fontFamily="@font/audiowide"
+                android:gravity="center"
+                android:textSize="17sp"
+                app:backgroundTint="#979494" />
+
+
+        </LinearLayout>
+
         <Button
             android:id="@+id/bt_play"
             android:layout_width="wrap_content"

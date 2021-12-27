@@ -2,6 +2,7 @@ package com.example.friendsgame;
 
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
@@ -10,14 +11,14 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.Locale;
-import java.util.Random;
 
 public class TapGame extends AppCompatActivity {
 
-    private static final long start_time_millis=30000;
+    private static final long start_time_millis=10000; //Mettre à 30000 pour le vrai jeu
     private TextView time, score, textScore;
     private boolean mTimerRunning = true ;
     private long mTimeLeft = start_time_millis;
@@ -29,6 +30,8 @@ public class TapGame extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.tap_game);
+
+        System.out.println("MyName : " + MainActivity.myName);
 
         init();
         listeners();
@@ -72,31 +75,44 @@ public class TapGame extends AppCompatActivity {
                 mTimerRunning=false ;
                 score.setText(Integer.toString(count));
                 textScore.setText("Final score:");
-                //showScore(count);
                 MainActivity.GAME_COUNT--;
+                //showScore(count);
                 new Handler().postDelayed(new Runnable() {
+                    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
                     @Override
                     public void run() {
-                        if (MainActivity.devicesConnected.size() == 0 && MainActivity.GAME_COUNT != 0) {
-                            Intent loading = new Intent(getApplicationContext(), LoadingScreen.class);
-                            startActivity(loading);
+                        MainActivity.myScore += count;
+                        if (MainActivity.devicesConnected.size() == 0 ) {
+                            if (MainActivity.GAME_COUNT != 0) {
+                                Intent loading = new Intent(getApplicationContext(), LoadingScreen.class);
+                                startActivity(loading);
+                            } else {
+                                //Jeu terminé
+                                Intent victory = new Intent(getApplicationContext(), VictoryScreen.class);
+                                startActivity(victory);
+                            }
                             finish();
                         } else {
                             if (MainActivity.GAME_COUNT != 0) {
+                                String msg = "{ \"type\": \"game\", \"score\": "+ String.valueOf(count) +", \"name\": "+MainActivity.myName +" }";
+                                MainActivity.sendReceive.write(msg.getBytes());
                                 Intent loading = new Intent(getApplicationContext(), LoadingScreen.class);
                                 startActivity(loading);
                                 finish();
                             } else {
-                        /*
-                        C'est ici que le jeu est fini
-                        */
-                                if (MainActivity.devicesConnected.size() != 0) {
-                                    String msg = "{ \"type\": \"tap\", \"score\": "+ String.valueOf(count) +"  }";
-                                    MainActivity.sendReceive.write(msg.getBytes());
-                                } else {
-                                    Intent victory = new Intent(getApplicationContext(), VictoryScreen.class);
-                                    startActivity(victory);
-                                    finish();
+                                //Jeu terminé et on est plusieurs
+                                String msg = "{ \"type\": \"finished\", \"score\": "+ String.valueOf(count) +", \"name\": "+MainActivity.myName +" }";
+                                MainActivity.sendReceive.write(msg.getBytes());
+                                if (MainActivity.allFinished()) {
+                                    if (MainActivity.determineWinner()) {
+                                        Intent defeat = new Intent(getApplicationContext(), DefeatScreen.class);
+                                        startActivity(defeat);
+                                        finish();
+                                    } else {
+                                        Intent victory = new Intent(getApplicationContext(), VictoryScreen.class);
+                                        startActivity(victory);
+                                        finish();
+                                    }
                                 }
                             }
                         }

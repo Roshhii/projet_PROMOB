@@ -14,7 +14,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -53,6 +52,8 @@ public class DiceGame extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         //start
         setContentView(R.layout.dice_game);
+
+        System.out.println("MyName : " + MainActivity.myName);
 
         init();
     }
@@ -131,6 +132,7 @@ public class DiceGame extends AppCompatActivity {
                             }
                             if (p == 0) {
                                 finalScore.setText("Final score: " + total);
+                                //showScore(total);
                                 p = 4;
                                 score = 0;
                                 total = 0;
@@ -139,6 +141,7 @@ public class DiceGame extends AppCompatActivity {
                                 new Handler().postDelayed(new Runnable() {
                                     @Override
                                     public void run() {
+                                        MainActivity.myScore += total;
                                         if (MainActivity.devicesConnected.size() == 0 ) {
                                             //On est tout seul
                                             if (MainActivity.GAME_COUNT != 0) {
@@ -147,26 +150,36 @@ public class DiceGame extends AppCompatActivity {
                                                 startActivity(loading);
                                                 finish();
                                             } else {
-                                                //Jeu terminé
+                                                //Jeu terminé, on a forcément gagné
                                                 Intent victory = new Intent(getApplicationContext(), VictoryScreen.class);
                                                 startActivity(victory);
                                                 finish();
                                             }
                                         } else {
                                             if (MainActivity.GAME_COUNT != 0) {
-                                                //le jeu continue
+                                                //le jeu continue, on envoie notre score et on lance le chargement
+                                                String msg = "{ \"type\": \"game\", \"score\": "+ String.valueOf(total) +", \"name\": "+MainActivity.myName +"}";
+                                                MainActivity.sendReceive.write(msg.getBytes());
                                                 Intent loading = new Intent(getApplicationContext(), LoadingScreen.class);
                                                 startActivity(loading);
                                                 finish();
                                             } else {
                                                 /*
-                                                C'est ici que le jeu est fini et on est plusieurs
+                                                C'est ici que le jeu est fini et on est plusieurs. On envoie nos score
                                                 */
-                                                /*
-                                                On envoie les scores du jeu terminé
-                                                */
-                                                //String msg = "{ \"type\": \"dice\", \"score\": "+ String.valueOf(total) +"  }";
-                                                //MainActivity.sendReceive.write(msg.getBytes());
+                                                String msg = "{ \"type\": \"finished\", \"score\": "+ String.valueOf(total) +", \"name\": "+MainActivity.myName +" }";
+                                                MainActivity.sendReceive.write(msg.getBytes());
+                                                if (MainActivity.allFinished()) {
+                                                    if (MainActivity.determineWinner()) {
+                                                        Intent defeat = new Intent(getApplicationContext(), DefeatScreen.class);
+                                                        startActivity(defeat);
+                                                        finish();
+                                                    } else {
+                                                        Intent victory = new Intent(getApplicationContext(), VictoryScreen.class);
+                                                        startActivity(victory);
+                                                        finish();
+                                                    }
+                                                }
                                             }
                                         }
                                     }

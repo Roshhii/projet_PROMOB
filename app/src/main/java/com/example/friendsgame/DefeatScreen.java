@@ -24,9 +24,9 @@ public class DefeatScreen extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.victory_screen);
+        setContentView(R.layout.defeat_screen);
 
-        this.mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.victoire1);
+        this.mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.defeat);
 
         textDefeat = findViewById(R.id.tv_defeat);
         btFinish = findViewById(R.id.bt_finish);

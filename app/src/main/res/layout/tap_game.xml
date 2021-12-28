@@ -60,7 +60,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/bg"
             android:paddingTop="25dp"
-            android:text="0:30"
+            android:text="0:10"
             android:textAlignment="center"
             android:textColor="@color/black"
             android:textSize="70sp"

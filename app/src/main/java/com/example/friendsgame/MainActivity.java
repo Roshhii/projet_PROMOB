@@ -56,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
     public static String myName;
     public static int myScore = 0;
     public static Map<String, Integer> scoreGamers, stateGamers;
+    public static boolean finished = false;
 
     public static int game, GAME_COUNT = 3;
     Button btPlay, btExplanations, btWifi, btSearch, btDone;
@@ -146,9 +147,15 @@ public class MainActivity extends AppCompatActivity {
                                 break;
                             //On récupère notre nom
                             case "gamer":
-                                System.out.println("passé dans le gamer");
-                                myName = obj.getString("name");
-                                System.out.println("Name : " + myName);
+                                String str = obj.getString("name");
+                                if (!(scoreGamers.containsKey(str) && stateGamers.containsKey(str))) {
+                                    String name = "{ \"type\": \"gamer\", \"name\": "+ myName+"}";
+                                    sendReceive.write(name.getBytes());
+                                    scoreGamers.put(str, 0);
+                                    stateGamers.put(str, 0);
+                                    System.out.println("Name reçu : " + str);
+                                    System.out.println("Gamers : " + stateGamers.toString());
+                                }
                                 break;
                             //Le score des joueurs
                             case "game":
@@ -156,13 +163,16 @@ public class MainActivity extends AppCompatActivity {
                                 int score = Integer.parseInt(obj.getString("score"));
                                 System.out.println("Score/ "+ gamer +" : " + score);
                                 scoreGamers.replace(gamer, (scoreGamers.get(gamer)+score));
+                                System.out.println("Score Gamers : " + scoreGamers.toString());
                                 break;
                             case "finished":
                                 String gamerFinished = obj.getString("name");
                                 stateGamers.replace(gamerFinished, 1);
                                 int finalScore = Integer.parseInt(obj.getString("score"));
                                 scoreGamers.replace(gamerFinished, (scoreGamers.get(gamerFinished)+finalScore));
-                                if (allFinished()) {
+                                System.out.println("Score Gamers : " + scoreGamers.toString());
+                                if (allFinished() && finished ) {
+                                    determineRanking();
                                     if (determineWinner()) {
                                         Intent defeat = new Intent(getApplicationContext(), DefeatScreen.class);
                                         startActivity(defeat);
@@ -174,8 +184,6 @@ public class MainActivity extends AppCompatActivity {
                                     }
                                 }
                         }
-                        System.out.println("Name : " + myName);
-                        System.out.println("Gamers : " + scoreGamers);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -265,8 +273,11 @@ public class MainActivity extends AppCompatActivity {
                     public void onSuccess() {
                         Toast.makeText(getApplicationContext(), "Connected to " + device.deviceName, Toast.LENGTH_SHORT).show();
                         devicesConnected.add(device.deviceName);
+                        /*
                         scoreGamers.put(device.deviceName, 0);
                         stateGamers.put(device.deviceName, 0);
+                        nameGamers.put(device.deviceName, "");
+                         */
                         /*
                         Je veux changer la liste et mettre quels appareils sont connectés
                          */
@@ -282,35 +293,32 @@ public class MainActivity extends AppCompatActivity {
         btPlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                generateGames();
-                System.out.println("Game 1 : " + table_games[0]);
-                System.out.println("Game 2 : " + table_games[1]);
-                System.out.println("Game 3 : " + table_games[2]);
-                System.out.println("number game : " + game);
-                System.out.println("GAME_COUNT : " + GAME_COUNT);
                 if (devicesConnected.size() == 0) {
                     System.out.println("Aucun device connecté");
                     Intent loading = new Intent(getApplicationContext(), LoadingScreen.class);
                     startActivity(loading);
                     finish();
                 } else {
-                    String str = etName.getText().toString();
+                    String str = tvName.getText().toString();
                     if (str != "") {
-                        for (String gamersName : stateGamers.keySet()) {
-                            String msg = "{ \"type\": \"gamer\", \"name\": "+ gamersName+"}";
-                            System.out.println("Gamers : " + gamersName);
-                            sendReceive.write(msg.getBytes());
-                        }
+                        generateGames();
+                        System.out.println("Game 1 : " + table_games[0]);
+                        System.out.println("Game 2 : " + table_games[1]);
+                        System.out.println("Game 3 : " + table_games[2]);
+                        System.out.println("number game : " + game);
+                        System.out.println("GAME_COUNT : " + GAME_COUNT);
+                        String msg = "{ \"type\": \"gamer\", \"name\": "+ myName+"}";
+                        sendReceive.write(msg.getBytes());
                         System.out.println("Un ou plusieurs devices connectés");
-                        Intent loading = new Intent(getApplicationContext(), LoadingScreen.class);
-                        startActivity(loading);
-                        finish();
                         String intGame1 = String.valueOf(table_games[0]);
                         String intGame2 = String.valueOf(table_games[1]);
                         String intGame3 = String.valueOf(table_games[2]);
-                        String msg = "{ \"name\": "+str+"\"type\": \"start\", \"game1\": "+ intGame1+", \"game2\": "+ intGame2 +", \"game3\": "+ intGame3+"}";
+                        msg = "{ \"name\": "+str+", \"type\": \"start\", \"game1\": "+ intGame1+", \"game2\": "+ intGame2 +", \"game3\": "+ intGame3+"}";
                         //\"game4\": "+ intGame4+"\"game5\": "+ intGame5+"\"game6\": "+ intGame6+"}";
                         sendReceive.write(msg.getBytes());
+                        Intent loading = new Intent(getApplicationContext(), LoadingScreen.class);
+                        startActivity(loading);
+                        finish();
                     } else {
                         Toast.makeText(getApplicationContext(), "Please enter a name", Toast.LENGTH_SHORT).show();
                     }
@@ -323,6 +331,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String str = etName.getText().toString();
                 if (str != "") {
+                    myName = str;
                     tvName.setText(str);
                 } else {
                     Toast.makeText(getApplicationContext(), "Please enter a name", Toast.LENGTH_SHORT).show();
@@ -525,6 +534,10 @@ public class MainActivity extends AppCompatActivity {
         table_games[2] = randomGame(1,2);
     }
 
+    /*
+    True : perdu
+    False : gagné
+     */
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public static boolean determineWinner () {
         Iterator it = scoreGamers.keySet().iterator();
@@ -544,6 +557,13 @@ public class MainActivity extends AppCompatActivity {
             return myName;
         }
          */
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public static void determineRanking() {
+        List<Map.Entry<String, Integer>> list = new ArrayList<>(scoreGamers.entrySet());
+        list.sort(Map.Entry.comparingByValue());
+        System.out.println("List : " + list);
     }
 
     public static boolean allFinished () {

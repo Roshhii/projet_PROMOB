@@ -31,7 +31,7 @@ public class TapGame extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.tap_game);
 
-        System.out.println("MyName : " + MainActivity.myName);
+        System.out.println("GAME_COUNT : " + MainActivity.GAME_COUNT);
 
         init();
         listeners();
@@ -101,9 +101,13 @@ public class TapGame extends AppCompatActivity {
                                 finish();
                             } else {
                                 //Jeu terminé et on est plusieurs
+                                MainActivity.finished = true;
                                 String msg = "{ \"type\": \"finished\", \"score\": "+ String.valueOf(count) +", \"name\": "+MainActivity.myName +" }";
                                 MainActivity.sendReceive.write(msg.getBytes());
                                 if (MainActivity.allFinished()) {
+                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                                        MainActivity.determineRanking();
+                                    }
                                     if (MainActivity.determineWinner()) {
                                         Intent defeat = new Intent(getApplicationContext(), DefeatScreen.class);
                                         startActivity(defeat);

@@ -50,10 +50,9 @@ public class DiceGame extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //start
         setContentView(R.layout.dice_game);
 
-        System.out.println("MyName : " + MainActivity.myName);
+        System.out.println("GAME_COUNT : " + MainActivity.GAME_COUNT);
 
         init();
     }
@@ -64,8 +63,6 @@ public class DiceGame extends AppCompatActivity {
         dice.setImageResource(R.drawable.dice6);
         mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-        System.out.println("Score : " + score);
-        System.out.println("p : " + p);
 
         System.out.println("GAME_COUNT : " + MainActivity.GAME_COUNT);
 
@@ -99,8 +96,6 @@ public class DiceGame extends AppCompatActivity {
                             score += 1;
                             mouvement = false;
                             Thread.sleep(200);
-                            System.out.println("Score : " + score);
-                            System.out.println("p : " + p);
                             switch (p) {
                                 case 1:
                                     texte = (TextView) findViewById(R.id.tv_value3);
@@ -133,9 +128,6 @@ public class DiceGame extends AppCompatActivity {
                             if (p == 0) {
                                 finalScore.setText("Final score: " + total);
                                 //showScore(total);
-                                p = 4;
-                                score = 0;
-                                total = 0;
                                 MainActivity.GAME_COUNT--;
                                 System.out.println("GAME_COUNT : " + MainActivity.GAME_COUNT);
                                 new Handler().postDelayed(new Runnable() {
@@ -159,6 +151,9 @@ public class DiceGame extends AppCompatActivity {
                                             if (MainActivity.GAME_COUNT != 0) {
                                                 //le jeu continue, on envoie notre score et on lance le chargement
                                                 String msg = "{ \"type\": \"game\", \"score\": "+ String.valueOf(total) +", \"name\": "+MainActivity.myName +"}";
+                                                p = 4;
+                                                score = 0;
+                                                total = 0;
                                                 MainActivity.sendReceive.write(msg.getBytes());
                                                 Intent loading = new Intent(getApplicationContext(), LoadingScreen.class);
                                                 startActivity(loading);
@@ -167,9 +162,14 @@ public class DiceGame extends AppCompatActivity {
                                                 /*
                                                 C'est ici que le jeu est fini et on est plusieurs. On envoie nos score
                                                 */
+                                                MainActivity.finished = true;
                                                 String msg = "{ \"type\": \"finished\", \"score\": "+ String.valueOf(total) +", \"name\": "+MainActivity.myName +" }";
+                                                p = 4;
+                                                score = 0;
+                                                total = 0;
                                                 MainActivity.sendReceive.write(msg.getBytes());
                                                 if (MainActivity.allFinished()) {
+                                                    MainActivity.determineRanking();
                                                     if (MainActivity.determineWinner()) {
                                                         Intent defeat = new Intent(getApplicationContext(), DefeatScreen.class);
                                                         startActivity(defeat);
@@ -184,7 +184,6 @@ public class DiceGame extends AppCompatActivity {
                                         }
                                     }
                                 }, 5000);
-
                             }
                         } catch (InterruptedException e) {
                             e.printStackTrace();

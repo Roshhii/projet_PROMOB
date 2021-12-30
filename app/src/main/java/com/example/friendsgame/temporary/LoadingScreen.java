@@ -1,4 +1,4 @@
-package com.example.friendsgame;
+package com.example.friendsgame.temporary;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -8,6 +8,13 @@ import android.os.Handler;
 import android.text.method.ScrollingMovementMethod;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.friendsgame.DiceGame;
+import com.example.friendsgame.GestureGame;
+import com.example.friendsgame.MainActivity;
+import com.example.friendsgame.MathGame;
+import com.example.friendsgame.R;
+import com.example.friendsgame.TapGame;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -67,6 +74,7 @@ public class LoadingScreen extends AppCompatActivity {
                     /*
                     1 : DiceGame
                     2 : TapGame
+                    3 : MathGame
                      */
                     case 1 :
                         Intent diceActivity = new Intent(getApplicationContext(), DiceGame.class);
@@ -74,8 +82,14 @@ public class LoadingScreen extends AppCompatActivity {
                         finish();
                         break;
                     case 2 :
+                    case 4 :
                         Intent tapActivity = new Intent(getApplicationContext(), TapGame.class);
                         startActivity(tapActivity);
+                        finish();
+                        break;
+                    case 3 :
+                        Intent mathActivity = new Intent(getApplicationContext(), MathGame.class);
+                        startActivity(mathActivity);
                         finish();
                         break;
                 }

@@ -30,7 +30,12 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
+
+import com.example.friendsgame.temporary.DefeatScreen;
+import com.example.friendsgame.temporary.LoadingScreen;
+import com.example.friendsgame.temporary.VictoryScreen;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -43,9 +48,11 @@ import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Random;
@@ -59,11 +66,13 @@ public class MainActivity extends AppCompatActivity {
     public static boolean finished = false;
 
     public static int game, GAME_COUNT = 3;
-    Button btPlay, btExplanations, btWifi, btSearch, btDone;
-    TextView tvStatus, tvName;
+    Button btPlay, btDone;
+    CardView cvWifi, cvExplanations, cvSearch;
+    TextView tvStatus, tvName, tvWifi;
     EditText etName;
 
-    public ListView devices, ranking;
+    public ListView devices;
+    public static ListView ranking;
 
     WifiManager wifiManager;
     WifiP2pManager mManager;
@@ -76,6 +85,7 @@ public class MainActivity extends AppCompatActivity {
     String[] deviceNameArray;
     static List<String> devicesConnected = new ArrayList<String>();
     WifiP2pDevice[] deviceArray;
+    public static String[] rankingGamers;
     public ArrayAdapter<String> adapter;
     public static ArrayAdapter<String> adapterRanking;
 
@@ -172,7 +182,7 @@ public class MainActivity extends AppCompatActivity {
                                 scoreGamers.replace(gamerFinished, (scoreGamers.get(gamerFinished)+finalScore));
                                 System.out.println("Score Gamers : " + scoreGamers.toString());
                                 if (allFinished() && finished ) {
-                                    determineRanking();
+                                    determineRanking(getApplicationContext());
                                     if (determineWinner()) {
                                         Intent defeat = new Intent(getApplicationContext(), DefeatScreen.class);
                                         startActivity(defeat);
@@ -182,6 +192,7 @@ public class MainActivity extends AppCompatActivity {
                                         startActivity(victory);
                                         finish();
                                     }
+                                    reset();
                                 }
                         }
                     } catch (JSONException e) {
@@ -206,7 +217,7 @@ public class MainActivity extends AppCompatActivity {
     La gestion des boutons
      */
     private void listeners() {
-        btExplanations.setOnClickListener(new View.OnClickListener() {
+        cvExplanations.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent welcomeActivity = new Intent(getApplicationContext(), WelcomeActivity.class);
@@ -214,19 +225,19 @@ public class MainActivity extends AppCompatActivity {
                 finish();
             }
         });
-        btWifi.setOnClickListener(new View.OnClickListener() {
+        cvWifi.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (wifiManager.isWifiEnabled()) {
                     wifiManager.setWifiEnabled(false);
-                    btWifi.setBackgroundColor(Color.parseColor("#CF3030"));
+                    tvWifi.setTextColor(Color.parseColor("#CF3030"));
                 } else {
                     wifiManager.setWifiEnabled(true);
-                    btWifi.setBackgroundColor(Color.parseColor("#50AE28"));
+                    tvWifi.setTextColor(Color.parseColor("#50AE28"));
                 }
             }
         });
-        btSearch.setOnClickListener(new View.OnClickListener() {
+        cvSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -293,6 +304,12 @@ public class MainActivity extends AppCompatActivity {
         btPlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                generateGames();
+                System.out.println("Game 1 : " + table_games[0]);
+                System.out.println("Game 2 : " + table_games[1]);
+                System.out.println("Game 3 : " + table_games[2]);
+                System.out.println("number game : " + game);
+                System.out.println("GAME_COUNT : " + GAME_COUNT);
                 if (devicesConnected.size() == 0) {
                     System.out.println("Aucun device connecté");
                     Intent loading = new Intent(getApplicationContext(), LoadingScreen.class);
@@ -301,12 +318,6 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     String str = tvName.getText().toString();
                     if (str != "") {
-                        generateGames();
-                        System.out.println("Game 1 : " + table_games[0]);
-                        System.out.println("Game 2 : " + table_games[1]);
-                        System.out.println("Game 3 : " + table_games[2]);
-                        System.out.println("number game : " + game);
-                        System.out.println("GAME_COUNT : " + GAME_COUNT);
                         String msg = "{ \"type\": \"gamer\", \"name\": "+ myName+"}";
                         sendReceive.write(msg.getBytes());
                         System.out.println("Un ou plusieurs devices connectés");
@@ -345,21 +356,22 @@ public class MainActivity extends AppCompatActivity {
      */
     private void init () {
         btPlay = findViewById(R.id.bt_play);
-        btExplanations = findViewById(R.id.bt_explanations);
+        cvExplanations = findViewById(R.id.cv_explanations);
         tvStatus = findViewById(R.id.tv_status);
         devices = findViewById(R.id.lv_devices);
         ranking = findViewById(R.id.lv_ranking);
-        btWifi = findViewById(R.id.bt_wifi);
-        btSearch = findViewById(R.id.bt_search);
+        cvWifi = findViewById(R.id.cv_wifi);
+        cvSearch = findViewById(R.id.cv_search);
         tvName = findViewById(R.id.tv_name);
+        tvWifi = findViewById(R.id.tv_wifi);
         etName = findViewById(R.id.et_name);
         btDone = findViewById(R.id.bt_name);
 
         wifiManager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
-        if (!wifiManager.isWifiEnabled()) {
-            btWifi.setBackgroundColor(Color.parseColor("#CF3030"));
+        if (wifiManager.isWifiEnabled()) {
+            tvWifi.setTextColor(Color.parseColor("#50AE28"));
         } else {
-            btWifi.setBackgroundColor(Color.parseColor("#50AE28"));
+            tvWifi.setTextColor(Color.parseColor("#CF3030"));
         }
 
         mManager = (WifiP2pManager) getSystemService(Context.WIFI_P2P_SERVICE);
@@ -529,9 +541,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void generateGames() {
-        table_games[0] = randomGame(1,2);
-        table_games[1] = randomGame(1,2);
-        table_games[2] = randomGame(1,2);
+        table_games[0] = randomGame(1,4);
+        table_games[1] = randomGame(1,4);
+        table_games[2] = randomGame(1,4);
     }
 
     /*
@@ -560,10 +572,27 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    public static void determineRanking() {
-        List<Map.Entry<String, Integer>> list = new ArrayList<>(scoreGamers.entrySet());
-        list.sort(Map.Entry.comparingByValue());
+    public static void determineRanking(Context context) {
+        scoreGamers.put(myName, myScore);
+        List<Integer> list = new ArrayList<Integer>(scoreGamers.values());
+        Collections.sort(list);
         System.out.println("List : " + list);
+        int index = 0;
+        rankingGamers = new String[list.size()];
+        ListIterator li = list.listIterator(list.size());
+        // Iterate in reverse.
+        while(li.hasPrevious()) {
+            int tmp = (int) li.previous();
+            rankingGamers[index] = getSingleKeyFromValue(scoreGamers, tmp);
+            index++;
+        }
+        System.out.println("Ranking:");
+        for (String str : rankingGamers) {
+            System.out.println(str);
+        }
+
+        adapterRanking = new ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, rankingGamers);
+        ranking.setAdapter(adapterRanking);
     }
 
     public static boolean allFinished () {
@@ -583,6 +612,13 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         return null;
+    }
+
+    public static void reset () {
+        myScore = 0;
+        GAME_COUNT = 3;
+        stateGamers.clear();
+        scoreGamers.clear();
     }
 
 

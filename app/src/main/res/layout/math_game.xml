@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="match_parent"
+    android:layout_gravity="center"
+    android:layout_width="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="50dp"
+        android:gravity="center"
+        android:layout_height="match_parent"
+        android:paddingHorizontal="15dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_math"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="15dp"
+            android:fontFamily="@font/bungee_shade"
+            android:gravity="center"
+            android:text="@string/text_math"
+            android:textSize="20sp" />
+
+
+        <TextView
+            android:id="@+id/tv_timeMath"
+            android:layout_width="294dp"
+            android:layout_height="108dp"
+            android:background="@drawable/bg"
+            android:paddingTop="25dp"
+            android:text="0:45"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="40sp" />
+
+        <TextView
+            android:id="@+id/tv_calculation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="60dp"
+            android:layout_marginBottom="20dp"
+            android:fontFamily="@font/audiowide"
+            android:textSize="24sp" />
+
+        <TextView
+            android:id="@+id/tv_AnswerCalculation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:layout_marginBottom="20dp"
+            android:fontFamily="@font/audiowide"
+            android:textSize="24sp" />
+
+        <EditText
+            android:id="@+id/et_answerCalculation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:gravity="center"
+            android:hint="Enter an answer"
+            android:imeOptions="actionDone"
+            android:minHeight="48dp"
+            android:singleLine="true" />
+
+        <Button
+            android:id="@+id/bt_mathFinish"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="20dp"
+            android:text="Got it!"
+            android:layout_marginTop="50dp"/>
+    </LinearLayout>
+
+</ScrollView>

@@ -6,7 +6,7 @@
     <string name="text_ranking">Ranking:</string>
     <string name="text_explication"></string>
     <string name="button_ok">OK !</string>
-    <string name="button_explication">Explanations</string>
+    <string name="text_explanations">INFO</string>
     <string name="button_wifi">WIFI</string>
     <string name="button_search">Search</string>
     <string name="text_status">Status: </string>
@@ -14,6 +14,8 @@
     <string name="text_diceFinalScore">Final score:</string>
     <string name="text_diceGame">Shake your phone and look at your score!</string>
     <string name="text_tapGame">Tap the buzzer as many times as possible in 30 seconds!</string>
+    <string name="text_math">Find the solution! Beware, you only have 45 seconds per calculation.</string>
+    <string name="text_gesture">Make the moves that will appear at the bottom of your screen.</string>
     <string name="text_tapScore">Score:</string>
     <string name="button_finish">Finish</string>
 </resources>

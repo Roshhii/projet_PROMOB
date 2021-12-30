@@ -14,6 +14,10 @@ import android.widget.Toast;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.friendsgame.temporary.DefeatScreen;
+import com.example.friendsgame.temporary.LoadingScreen;
+import com.example.friendsgame.temporary.VictoryScreen;
+
 import java.util.Locale;
 
 public class TapGame extends AppCompatActivity {
@@ -43,7 +47,6 @@ public class TapGame extends AppCompatActivity {
         buzzer = (ImageButton) findViewById(R.id.iv_buzzer);
         textScore = (TextView) findViewById(R.id.tv_tapTextScore);
         showToast();
-        System.out.println("GAME_COUNT : " + MainActivity.GAME_COUNT);
     }
 
     public void listeners () {
@@ -88,6 +91,7 @@ public class TapGame extends AppCompatActivity {
                                 startActivity(loading);
                             } else {
                                 //Jeu terminé
+                                MainActivity.reset();
                                 Intent victory = new Intent(getApplicationContext(), VictoryScreen.class);
                                 startActivity(victory);
                             }
@@ -106,7 +110,7 @@ public class TapGame extends AppCompatActivity {
                                 MainActivity.sendReceive.write(msg.getBytes());
                                 if (MainActivity.allFinished()) {
                                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                                        MainActivity.determineRanking();
+                                        MainActivity.determineRanking(getApplicationContext());
                                     }
                                     if (MainActivity.determineWinner()) {
                                         Intent defeat = new Intent(getApplicationContext(), DefeatScreen.class);
@@ -117,6 +121,7 @@ public class TapGame extends AppCompatActivity {
                                         startActivity(victory);
                                         finish();
                                     }
+                                    MainActivity.reset();
                                 }
                             }
                         }

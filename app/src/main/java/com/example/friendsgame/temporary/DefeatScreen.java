@@ -1,4 +1,4 @@
-package com.example.friendsgame;
+package com.example.friendsgame.temporary;
 
 import android.content.Intent;
 import android.media.MediaPlayer;
@@ -11,35 +11,38 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.friendsgame.MainActivity;
+import com.example.friendsgame.R;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-public class VictoryScreen extends AppCompatActivity {
+public class DefeatScreen extends AppCompatActivity {
 
-    TextView textVictory;
+    TextView textDefeat;
     Button btFinish;
     private MediaPlayer mediaPlayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.victory_screen);
+        setContentView(R.layout.defeat_screen);
 
-        this.mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.victoire1);
+        this.mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.defeat);
 
-        textVictory = findViewById(R.id.tv_victory);
+        textDefeat = findViewById(R.id.tv_defeat);
         btFinish = findViewById(R.id.bt_finish);
-        textVictory.setMovementMethod(new ScrollingMovementMethod());
+        textDefeat.setMovementMethod(new ScrollingMovementMethod());
         try {
-            BufferedReader reader = new BufferedReader(new InputStreamReader(getAssets().open("text/victory.txt")));
+            BufferedReader reader = new BufferedReader(new InputStreamReader(getAssets().open("text/defeat.txt")));
             StringBuilder text = new StringBuilder();
             String line;
             while ((line = reader.readLine()) != null) {
                 text.append(line);
                 text.append('\n');
             }
-            textVictory.setText(text);
+            textDefeat.setText(text);
         } catch (IOException e) {
             Toast.makeText(getApplicationContext(),"Error reading file!",Toast.LENGTH_LONG).show();
             e.printStackTrace();
@@ -56,3 +59,4 @@ public class VictoryScreen extends AppCompatActivity {
         });
     }
 }
+

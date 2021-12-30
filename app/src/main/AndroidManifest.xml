@@ -35,11 +35,19 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FriendsGame">
         <activity
-            android:name=".DefeatScreen"
+            android:name=".GestureGame"
             android:parentActivityName=".MainActivity">
         </activity>
         <activity
-            android:name=".VictoryScreen"
+            android:name=".MathGame"
+            android:parentActivityName=".MainActivity">
+        </activity>
+        <activity
+            android:name=".temporary.DefeatScreen"
+            android:parentActivityName=".MainActivity">
+        </activity>
+        <activity
+            android:name=".temporary.VictoryScreen"
             android:parentActivityName=".MainActivity">
         </activity>
         <activity
@@ -51,7 +59,7 @@
             android:parentActivityName=".MainActivity">
         </activity>
         <activity
-            android:name=".LoadingScreen"
+            android:name=".temporary.LoadingScreen"
             android:parentActivityName=".MainActivity">
         </activity>
         <activity

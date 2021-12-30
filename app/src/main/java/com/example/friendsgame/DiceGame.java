@@ -17,6 +17,11 @@ import android.os.Vibrator;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.friendsgame.temporary.DefeatScreen;
+import com.example.friendsgame.temporary.LoadingScreen;
+import com.example.friendsgame.temporary.VictoryScreen;
+
 import java.util.Random;
 
 public class DiceGame extends AppCompatActivity {
@@ -63,8 +68,6 @@ public class DiceGame extends AppCompatActivity {
         dice.setImageResource(R.drawable.dice6);
         mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-
-        System.out.println("GAME_COUNT : " + MainActivity.GAME_COUNT);
 
         SensorEventListener sensorEventListener = new SensorEventListener() {
             @RequiresApi(api = Build.VERSION_CODES.O)
@@ -118,14 +121,18 @@ public class DiceGame extends AppCompatActivity {
                                     Toast.makeText(getApplicationContext(), "SCORE :" + score, Toast.LENGTH_SHORT).show();
                                     p--;
                                     break;
+                                    /*
                                 case 4:
                                     p--;
                                     break;
+                                     */
                                 default:
+                                    p = 3;
                                     break;
 
                             }
                             if (p == 0) {
+                                mSensorManager.unregisterListener(this, mAccelerometer);
                                 finalScore.setText("Final score: " + total);
                                 //showScore(total);
                                 MainActivity.GAME_COUNT--;
@@ -143,6 +150,7 @@ public class DiceGame extends AppCompatActivity {
                                                 finish();
                                             } else {
                                                 //Jeu terminé, on a forcément gagné
+                                                MainActivity.reset();
                                                 Intent victory = new Intent(getApplicationContext(), VictoryScreen.class);
                                                 startActivity(victory);
                                                 finish();
@@ -169,7 +177,7 @@ public class DiceGame extends AppCompatActivity {
                                                 total = 0;
                                                 MainActivity.sendReceive.write(msg.getBytes());
                                                 if (MainActivity.allFinished()) {
-                                                    MainActivity.determineRanking();
+                                                    MainActivity.determineRanking(getApplicationContext());
                                                     if (MainActivity.determineWinner()) {
                                                         Intent defeat = new Intent(getApplicationContext(), DefeatScreen.class);
                                                         startActivity(defeat);
@@ -179,6 +187,7 @@ public class DiceGame extends AppCompatActivity {
                                                         startActivity(victory);
                                                         finish();
                                                     }
+                                                    MainActivity.reset();
                                                 }
                                             }
                                         }

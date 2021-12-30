@@ -33,6 +33,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 
+import com.example.friendsgame.data.User;
+import com.example.friendsgame.other.SharedPref;
 import com.example.friendsgame.temporary.DefeatScreen;
 import com.example.friendsgame.temporary.LoadingScreen;
 import com.example.friendsgame.temporary.VictoryScreen;
@@ -66,10 +68,9 @@ public class MainActivity extends AppCompatActivity {
     public static boolean finished = false;
 
     public static int game, GAME_COUNT = 3;
-    Button btPlay, btDone;
-    CardView cvWifi, cvExplanations, cvSearch;
-    TextView tvStatus, tvName, tvWifi;
-    EditText etName;
+    Button btPlay;
+    CardView cvWifi, cvExplanations, cvSearch, cvLogout;
+    TextView tvStatus, tvName, tvWifi, tvHello;
 
     public ListView devices;
     public static ListView ranking;
@@ -96,6 +97,9 @@ public class MainActivity extends AppCompatActivity {
 
     public static int[] table_games = new int[3]; //new int[6] à la fin
 
+    SharedPref sharedPref;
+    User user;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -105,6 +109,9 @@ public class MainActivity extends AppCompatActivity {
 
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
+
+        sharedPref = SharedPref.getInstance();
+        user = sharedPref.getUser(this);
 
         init();
         listeners();
@@ -316,37 +323,29 @@ public class MainActivity extends AppCompatActivity {
                     startActivity(loading);
                     finish();
                 } else {
-                    String str = tvName.getText().toString();
-                    if (str != "") {
-                        String msg = "{ \"type\": \"gamer\", \"name\": "+ myName+"}";
-                        sendReceive.write(msg.getBytes());
-                        System.out.println("Un ou plusieurs devices connectés");
-                        String intGame1 = String.valueOf(table_games[0]);
-                        String intGame2 = String.valueOf(table_games[1]);
-                        String intGame3 = String.valueOf(table_games[2]);
-                        msg = "{ \"name\": "+str+", \"type\": \"start\", \"game1\": "+ intGame1+", \"game2\": "+ intGame2 +", \"game3\": "+ intGame3+"}";
-                        //\"game4\": "+ intGame4+"\"game5\": "+ intGame5+"\"game6\": "+ intGame6+"}";
-                        sendReceive.write(msg.getBytes());
-                        Intent loading = new Intent(getApplicationContext(), LoadingScreen.class);
-                        startActivity(loading);
-                        finish();
-                    } else {
-                        Toast.makeText(getApplicationContext(), "Please enter a name", Toast.LENGTH_SHORT).show();
-                    }
+                    String msg = "{ \"type\": \"gamer\", \"name\": "+ myName+"}";
+                    sendReceive.write(msg.getBytes());
+                    System.out.println("Un ou plusieurs devices connectés");
+                    String intGame1 = String.valueOf(table_games[0]);
+                    String intGame2 = String.valueOf(table_games[1]);
+                    String intGame3 = String.valueOf(table_games[2]);
+                    msg = "{ \"name\": "+myName+", \"type\": \"start\", \"game1\": "+ intGame1+", \"game2\": "+ intGame2 +", \"game3\": "+ intGame3+"}";
+                    //\"game4\": "+ intGame4+"\"game5\": "+ intGame5+"\"game6\": "+ intGame6+"}";
+                    sendReceive.write(msg.getBytes());
+                    Intent loading = new Intent(getApplicationContext(), LoadingScreen.class);
+                    startActivity(loading);
+                    finish();
                 }
             }
         });
 
-        btDone.setOnClickListener(new View.OnClickListener() {
+        cvLogout.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                String str = etName.getText().toString();
-                if (str != "") {
-                    myName = str;
-                    tvName.setText(str);
-                } else {
-                    Toast.makeText(getApplicationContext(), "Please enter a name", Toast.LENGTH_SHORT).show();
-                }
+            public void onClick(View view) {
+                sharedPref.clearSharedPref(MainActivity.this);
+                Intent intent = new Intent(MainActivity.this,LoginActivity.class);
+                startActivity(intent);
+                finish();
             }
         });
     }
@@ -355,6 +354,7 @@ public class MainActivity extends AppCompatActivity {
     L'initialisation des composants et des outils dont on a besoin pour le WiFi P2P
      */
     private void init () {
+
         btPlay = findViewById(R.id.bt_play);
         cvExplanations = findViewById(R.id.cv_explanations);
         tvStatus = findViewById(R.id.tv_status);
@@ -362,10 +362,12 @@ public class MainActivity extends AppCompatActivity {
         ranking = findViewById(R.id.lv_ranking);
         cvWifi = findViewById(R.id.cv_wifi);
         cvSearch = findViewById(R.id.cv_search);
-        tvName = findViewById(R.id.tv_name);
+        cvLogout = findViewById(R.id.cv_logout);
+
+        tvHello = findViewById(R.id.tv_hello);
+        tvHello.setText("Hello, " + user.getUsername());
+
         tvWifi = findViewById(R.id.tv_wifi);
-        etName = findViewById(R.id.et_name);
-        btDone = findViewById(R.id.bt_name);
 
         wifiManager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
         if (wifiManager.isWifiEnabled()) {

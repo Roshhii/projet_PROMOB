@@ -18,4 +18,9 @@
     <string name="text_gesture">Make the moves that will appear at the bottom of your screen.</string>
     <string name="text_tapScore">Score:</string>
     <string name="button_finish">Finish</string>
+    <string name="create_account">Create Account</string>
+    <string name="username_cannot_empty">Username cannot be empty</string>
+    <string name="password_cannot_empty">Password cannot be empty</string>
+    <string name="email_cannot_empty">Email cannot be empty</string>
+    <string name="email_not_valid">Email must be valid</string>
 </resources>

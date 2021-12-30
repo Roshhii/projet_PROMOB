@@ -20,4 +20,24 @@
         <item name="cardElevation">4dp</item>
         <item name="cardBackgroundColor">@color/white</item>
     </style>
+        <style name="btnStyle" parent="Widget.MaterialComponents.Button">
+            <item name="backgroundTint">@color/purple_500</item>
+            <item name="cornerRadius">@dimen/btn_radius</item>
+            <item name="android:layout_height">@dimen/btn_height</item>
+        </style>
+
+        <style name="titleTextStyle">
+            <item name="android:textSize">28sp</item>
+            <item name="android:textColor">@color/black</item>
+            <item name="android:textStyle">bold</item>
+        </style>
+    <style name="editTextLayoutStyle" parent="Widget.MaterialComponents.TextInputLayout.FilledBox">
+        <item name="boxStrokeWidth">0dp</item>
+        <item name="boxStrokeWidthFocused">0dp</item>
+        <item name="boxBackgroundColor">@color/edit_text_bg</item>
+        <item name="boxCornerRadiusTopStart">@dimen/edit_text_corner_radius</item>
+        <item name="boxCornerRadiusTopEnd">@dimen/edit_text_corner_radius</item>
+        <item name="boxCornerRadiusBottomStart">@dimen/edit_text_corner_radius</item>
+        <item name="boxCornerRadiusBottomEnd">@dimen/edit_text_corner_radius</item>
+    </style>
 </resources>

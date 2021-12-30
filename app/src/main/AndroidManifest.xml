@@ -34,6 +34,8 @@
         android:roundIcon="@mipmap/ic_friendsgame_foreground"
         android:supportsRtl="true"
         android:theme="@style/Theme.FriendsGame">
+        <activity android:name=".WelcomeActivity" />
+        <activity android:name=".RegisterActivity" />
         <activity
             android:name=".GestureGame"
             android:parentActivityName=".MainActivity">
@@ -67,7 +69,7 @@
             android:parentActivityName=".MainActivity">
         </activity>
         <activity
-            android:name=".WelcomeActivity"
+            android:name=".LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -73,8 +73,9 @@ public class LoadingScreen extends AppCompatActivity {
                 switch (game) {
                     /*
                     1 : DiceGame
-                    2 : TapGame
-                    3 : MathGame
+                    2 : GestureGame
+                    3 : TapGame
+                    4 : MathGame
                      */
                     case 1 :
                         Intent diceActivity = new Intent(getApplicationContext(), DiceGame.class);
@@ -82,12 +83,16 @@ public class LoadingScreen extends AppCompatActivity {
                         finish();
                         break;
                     case 2 :
-                    case 4 :
+                        /*Intent gestureActivity = new Intent(getApplicationContext(), GestureGame.class);
+                        startActivity(gestureActivity);
+                        finish();
+                        break;*/
+                    case 3 :
                         Intent tapActivity = new Intent(getApplicationContext(), TapGame.class);
                         startActivity(tapActivity);
                         finish();
                         break;
-                    case 3 :
+                    case 4 :
                         Intent mathActivity = new Intent(getApplicationContext(), MathGame.class);
                         startActivity(mathActivity);
                         finish();

@@ -9,14 +9,16 @@
         <entry key="app/src/main/res/drawable/ic_friendsgame_background.xml" value="0.371875" />
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.371875" />
         <entry key="app/src/main/res/drawable/logout.xml" value="0.371875" />
-        <entry key="app/src/main/res/layout/activity_main.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.6028243601059136" />
         <entry key="app/src/main/res/layout/defeat_screen.xml" value="0.33469202898550726" />
         <entry key="app/src/main/res/layout/dice_game.xml" value="0.34556159420289856" />
+        <entry key="app/src/main/res/layout/finished_screen.xml" value="0.29483695652173914" />
         <entry key="app/src/main/res/layout/gesture_game.xml" value="0.2966485507246377" />
         <entry key="app/src/main/res/layout/loading_screen.xml" value="0.19791666666666666" />
         <entry key="app/src/main/res/layout/login_activity.xml" value="0.29483695652173914" />
         <entry key="app/src/main/res/layout/math_activity.xml" value="0.30570652173913043" />
         <entry key="app/src/main/res/layout/math_game.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/practice_activity.xml" value="0.33" />
         <entry key="app/src/main/res/layout/register_activity.xml" value="0.29483695652173914" />
         <entry key="app/src/main/res/layout/tap_game.xml" value="0.34193840579710144" />
         <entry key="app/src/main/res/layout/victory_screen.xml" value="0.19791666666666666" />

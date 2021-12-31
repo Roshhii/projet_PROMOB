@@ -22,7 +22,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,7 +34,7 @@ import androidx.core.app.ActivityCompat;
 
 import com.example.friendsgame.data.User;
 import com.example.friendsgame.other.SharedPref;
-import com.example.friendsgame.temporary.DefeatScreen;
+import com.example.friendsgame.temporary.FinishedScreen;
 import com.example.friendsgame.temporary.LoadingScreen;
 import com.example.friendsgame.temporary.VictoryScreen;
 
@@ -69,11 +68,10 @@ public class MainActivity extends AppCompatActivity {
 
     public static int game, GAME_COUNT = 3;
     Button btPlay;
-    CardView cvWifi, cvExplanations, cvSearch, cvLogout;
-    TextView tvStatus, tvName, tvWifi, tvHello;
+    CardView cvWifi, cvExplanations, cvSearch, cvLogout, cvPractice;
+    TextView tvStatus, tvWifi, tvHello;
 
     public ListView devices;
-    public static ListView ranking;
 
     WifiManager wifiManager;
     WifiP2pManager mManager;
@@ -112,6 +110,9 @@ public class MainActivity extends AppCompatActivity {
 
         sharedPref = SharedPref.getInstance();
         user = sharedPref.getUser(this);
+        myName = user.getUsername();
+
+        System.out.println("myName : " + myName);
 
         init();
         listeners();
@@ -190,16 +191,9 @@ public class MainActivity extends AppCompatActivity {
                                 System.out.println("Score Gamers : " + scoreGamers.toString());
                                 if (allFinished() && finished ) {
                                     determineRanking(getApplicationContext());
-                                    if (determineWinner()) {
-                                        Intent defeat = new Intent(getApplicationContext(), DefeatScreen.class);
-                                        startActivity(defeat);
-                                        finish();
-                                    } else {
-                                        Intent victory = new Intent(getApplicationContext(), VictoryScreen.class);
-                                        startActivity(victory);
-                                        finish();
-                                    }
-                                    reset();
+                                    Intent finished = new Intent(getApplicationContext(), FinishedScreen.class);
+                                    startActivity(finished);
+                                    finish();
                                 }
                         }
                     } catch (JSONException e) {
@@ -348,6 +342,15 @@ public class MainActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+        cvPractice.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this,PracticeActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
     }
 
     /*
@@ -359,10 +362,10 @@ public class MainActivity extends AppCompatActivity {
         cvExplanations = findViewById(R.id.cv_explanations);
         tvStatus = findViewById(R.id.tv_status);
         devices = findViewById(R.id.lv_devices);
-        ranking = findViewById(R.id.lv_ranking);
         cvWifi = findViewById(R.id.cv_wifi);
         cvSearch = findViewById(R.id.cv_search);
         cvLogout = findViewById(R.id.cv_logout);
+        cvPractice = findViewById(R.id.cv_practice);
 
         tvHello = findViewById(R.id.tv_hello);
         tvHello.setText("Hello, " + user.getUsername());
@@ -574,7 +577,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    public static void determineRanking(Context context) {
+    public static ArrayAdapter<String> determineRanking(Context context) {
         scoreGamers.put(myName, myScore);
         List<Integer> list = new ArrayList<Integer>(scoreGamers.values());
         Collections.sort(list);
@@ -585,7 +588,7 @@ public class MainActivity extends AppCompatActivity {
         // Iterate in reverse.
         while(li.hasPrevious()) {
             int tmp = (int) li.previous();
-            rankingGamers[index] = getSingleKeyFromValue(scoreGamers, tmp);
+            rankingGamers[index] = getSingleKeyFromValue(scoreGamers, tmp) + " (Score: " + tmp + ")";
             index++;
         }
         System.out.println("Ranking:");
@@ -594,7 +597,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         adapterRanking = new ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, rankingGamers);
-        ranking.setAdapter(adapterRanking);
+        return adapterRanking;
     }
 
     public static boolean allFinished () {

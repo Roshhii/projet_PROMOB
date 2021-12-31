@@ -20,7 +20,7 @@ import java.io.InputStreamReader;
 
 public class DefeatScreen extends AppCompatActivity {
 
-    TextView textDefeat;
+    TextView textVictory;
     Button btFinish;
     private MediaPlayer mediaPlayer;
 
@@ -31,9 +31,9 @@ public class DefeatScreen extends AppCompatActivity {
 
         this.mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.defeat);
 
-        textDefeat = findViewById(R.id.tv_defeat);
+        textVictory = findViewById(R.id.tv_victory);
         btFinish = findViewById(R.id.bt_finish);
-        textDefeat.setMovementMethod(new ScrollingMovementMethod());
+        textVictory.setMovementMethod(new ScrollingMovementMethod());
         try {
             BufferedReader reader = new BufferedReader(new InputStreamReader(getAssets().open("text/defeat.txt")));
             StringBuilder text = new StringBuilder();
@@ -42,7 +42,7 @@ public class DefeatScreen extends AppCompatActivity {
                 text.append(line);
                 text.append('\n');
             }
-            textDefeat.setText(text);
+            textVictory.setText(text);
         } catch (IOException e) {
             Toast.makeText(getApplicationContext(),"Error reading file!",Toast.LENGTH_LONG).show();
             e.printStackTrace();
@@ -59,4 +59,3 @@ public class DefeatScreen extends AppCompatActivity {
         });
     }
 }
-

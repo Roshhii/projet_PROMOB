@@ -36,6 +36,7 @@
         android:theme="@style/Theme.FriendsGame">
         <activity android:name=".WelcomeActivity" />
         <activity android:name=".RegisterActivity" />
+        <activity android:name=".PracticeActivity"/>
         <activity
             android:name=".GestureGame"
             android:parentActivityName=".MainActivity">
@@ -45,7 +46,7 @@
             android:parentActivityName=".MainActivity">
         </activity>
         <activity
-            android:name=".temporary.DefeatScreen"
+            android:name=".temporary.FinishedScreen"
             android:parentActivityName=".MainActivity">
         </activity>
         <activity

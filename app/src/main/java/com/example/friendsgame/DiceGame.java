@@ -18,7 +18,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.friendsgame.temporary.DefeatScreen;
+import com.example.friendsgame.temporary.FinishedScreen;
 import com.example.friendsgame.temporary.LoadingScreen;
 import com.example.friendsgame.temporary.VictoryScreen;
 
@@ -178,16 +178,9 @@ public class DiceGame extends AppCompatActivity {
                                                 MainActivity.sendReceive.write(msg.getBytes());
                                                 if (MainActivity.allFinished()) {
                                                     MainActivity.determineRanking(getApplicationContext());
-                                                    if (MainActivity.determineWinner()) {
-                                                        Intent defeat = new Intent(getApplicationContext(), DefeatScreen.class);
-                                                        startActivity(defeat);
-                                                        finish();
-                                                    } else {
-                                                        Intent victory = new Intent(getApplicationContext(), VictoryScreen.class);
-                                                        startActivity(victory);
-                                                        finish();
-                                                    }
-                                                    MainActivity.reset();
+                                                    Intent finished = new Intent(getApplicationContext(), FinishedScreen.class);
+                                                    startActivity(finished);
+                                                    finish();
                                                 }
                                             }
                                         }

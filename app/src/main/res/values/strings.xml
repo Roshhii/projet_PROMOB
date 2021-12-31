@@ -16,6 +16,7 @@
     <string name="text_tapGame">Tap the buzzer as many times as possible in 30 seconds!</string>
     <string name="text_math">Find the solution! Beware, you only have 45 seconds per calculation.</string>
     <string name="text_gesture">Make the moves that will appear at the bottom of your screen.</string>
+    <string name="text_practice">Choose the game you want to train for</string>
     <string name="text_tapScore">Score:</string>
     <string name="button_finish">Finish</string>
     <string name="create_account">Create Account</string>

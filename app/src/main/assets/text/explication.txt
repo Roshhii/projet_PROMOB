@@ -1,15 +1,12 @@
-Welcome to the Friend'sGame app!
+Welcome to the Friend'sGame application!
 
-This application allows you to play various games with your friends.
-In order to win, you have to earn as many points as possible on the different games.
-The points are awarded according to the ranking of the games.
+This application allows you to play different games with your friends.
+In order to win, you have to collect as many points as possible on the different games.
 
-First, enter a name in the associated field and press "DONE".
-
-To play with your friends next to you, you have to activate the Wi-Fi with the "WIFI" button.
+To play with your friends next to you, you need to activate Wi-Fi with the "WIFI" button.
 However, the application does not necessarily need an internet connection. WiFi is just a way for you to connect together.
-Then press "SEARCH" to search for your friends.
+Then press "SEARCH" to search for your friends. Disabling WiFi will no longer make it possible to connect with your friends and the "Devices" list will become empty.
 
-Select the nearby devices you want to connect to in the first list "Devices". If you are the host, it is up to you to launch by pressing the "PLAY" button.
+Select the nearby devices you want to connect to from the "Devices" list and start the game by pressing "PLAY".
 
 Have fun!

@@ -14,7 +14,7 @@ import android.widget.Toast;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.friendsgame.temporary.DefeatScreen;
+import com.example.friendsgame.temporary.FinishedScreen;
 import com.example.friendsgame.temporary.LoadingScreen;
 import com.example.friendsgame.temporary.VictoryScreen;
 
@@ -112,16 +112,9 @@ public class TapGame extends AppCompatActivity {
                                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                                         MainActivity.determineRanking(getApplicationContext());
                                     }
-                                    if (MainActivity.determineWinner()) {
-                                        Intent defeat = new Intent(getApplicationContext(), DefeatScreen.class);
-                                        startActivity(defeat);
-                                        finish();
-                                    } else {
-                                        Intent victory = new Intent(getApplicationContext(), VictoryScreen.class);
-                                        startActivity(victory);
-                                        finish();
-                                    }
-                                    MainActivity.reset();
+                                    Intent finished = new Intent(getApplicationContext(), FinishedScreen.class);
+                                    startActivity(finished);
+                                    finish();
                                 }
                             }
                         }

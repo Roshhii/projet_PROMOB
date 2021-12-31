@@ -111,7 +111,6 @@ public class LoginActivity extends AppCompatActivity {
                     sharedPref.setUser(LoginActivity.this, user);
                     startActivity(new Intent(LoginActivity.this, MainActivity.class));
                     //Toast.makeText(LoginActivity.this, "run", Toast.LENGTH_SHORT).show();
-                    MainActivity.myName = user.getUsername();
                     return;
                 }
             }

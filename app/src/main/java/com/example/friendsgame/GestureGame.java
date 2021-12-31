@@ -12,14 +12,13 @@ import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.cardview.widget.CardView;
 
-import com.example.friendsgame.temporary.DefeatScreen;
+import com.example.friendsgame.temporary.FinishedScreen;
 import com.example.friendsgame.temporary.LoadingScreen;
 import com.example.friendsgame.temporary.VictoryScreen;
 
@@ -164,16 +163,9 @@ public class GestureGame extends Activity implements
                                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                                             MainActivity.determineRanking(getApplicationContext());
                                         }
-                                        if (MainActivity.determineWinner()) {
-                                            Intent defeat = new Intent(getApplicationContext(), DefeatScreen.class);
-                                            startActivity(defeat);
-                                            finish();
-                                        } else {
-                                            Intent victory = new Intent(getApplicationContext(), VictoryScreen.class);
-                                            startActivity(victory);
-                                            finish();
-                                        }
-                                        MainActivity.reset();
+                                        Intent finished = new Intent(getApplicationContext(), FinishedScreen.class);
+                                        startActivity(finished);
+                                        finish();
                                     }
                                 }
                             }

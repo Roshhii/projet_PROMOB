@@ -4,7 +4,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_height="match_parent"
-    android:layout_gravity="center"
     android:layout_width="match_parent">
 
     <LinearLayout
@@ -13,9 +12,48 @@
         android:gravity="center"
         android:layout_gravity="center"
         android:layout_height="match_parent"
-        android:layout_marginTop="30dp"
         android:paddingHorizontal="15dp"
         android:orientation="vertical">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/iv_buzzerBack"
+                app:srcCompat="@drawable/arrow"
+                tools:ignore="VectorDrawableCompat"
+                android:clickable="false"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:visibility="invisible"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0"/>
+
+
+            <ImageView
+                android:id="@+id/iv_buzzerAgain"
+                app:srcCompat="@drawable/replay"
+                android:saveEnabled="false"
+                tools:ignore="VectorDrawableCompat"
+                android:layout_width="35dp"
+                android:visibility="invisible"
+                android:layout_height="35dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintVertical_bias="0.0"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView
             android:id="@+id/tv_diceGame"

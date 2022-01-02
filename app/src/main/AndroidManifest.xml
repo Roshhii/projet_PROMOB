@@ -34,6 +34,22 @@
         android:roundIcon="@mipmap/ic_friendsgame_foreground"
         android:supportsRtl="true"
         android:theme="@style/Theme.FriendsGame">
+        <activity
+            android:name=".practice.PracticeDiceActivity" >
+            android:parentActivityName=".PracticeActivity">
+        </activity>
+        <activity
+            android:name=".practice.PracticeMathActivity" >
+            android:parentActivityName=".PracticeActivity">
+        </activity>
+        <activity
+            android:name=".practice.PracticeGestureActivity" >
+            android:parentActivityName=".PracticeActivity">
+        </activity>
+        <activity
+            android:name=".practice.PracticeBuzzerActivity" >
+            android:parentActivityName=".PracticeActivity">
+        </activity>
         <activity android:name=".WelcomeActivity" />
         <activity android:name=".RegisterActivity" />
         <activity android:name=".PracticeActivity"/>

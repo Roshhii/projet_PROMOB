@@ -23,7 +23,6 @@
                 android:id="@+id/iv_buzzerBack"
                 app:srcCompat="@drawable/arrow"
                 tools:ignore="VectorDrawableCompat"
-                android:clickable="false"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:visibility="invisible"

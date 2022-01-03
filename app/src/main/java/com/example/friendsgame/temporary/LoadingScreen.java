@@ -83,10 +83,10 @@ public class LoadingScreen extends AppCompatActivity {
                         finish();
                         break;
                     case 2 :
-                        /*Intent gestureActivity = new Intent(getApplicationContext(), GestureGame.class);
+                        Intent gestureActivity = new Intent(getApplicationContext(), GestureGame.class);
                         startActivity(gestureActivity);
                         finish();
-                        break;*/
+                        break;
                     case 3 :
                         Intent tapActivity = new Intent(getApplicationContext(), TapGame.class);
                         startActivity(tapActivity);

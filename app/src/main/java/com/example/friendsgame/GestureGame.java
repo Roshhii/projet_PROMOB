@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -35,7 +36,7 @@ public class GestureGame extends Activity implements
     private static final int SWIPE_VELOCITY_THRESHOLD = 100;
     private static final int SWIPE_THRESHOLD = 100;
 
-    private TextView tvGesture, tvScore, tvFinalScore;
+    private TextView tvGesture, tvScore, tvFinalScore, titleGesture;
     private CardView cvGesture;
 
     String[] mouvements = {
@@ -65,8 +66,18 @@ public class GestureGame extends Activity implements
         mGestureDetector.setOnDoubleTapListener(this);
 
         tvGesture = findViewById(R.id.tv_gesture);
+        titleGesture = findViewById(R.id.tv_titleGesture);
         tvScore = findViewById(R.id.tv_timeGesture);
         tvFinalScore = findViewById(R.id.tv_gestureScore);
+
+        Typeface audiowide = Typeface.createFromAsset(getAssets(),
+                "fonts/audiowide.ttf");
+        Typeface bungee_shade = Typeface.createFromAsset(getAssets(),
+                "fonts/bungee_shade.ttf");
+
+        titleGesture.setTypeface(bungee_shade);
+        tvFinalScore.setTypeface(audiowide);
+
 
         System.out.println("GAME_COUNT : " + MainActivity.GAME_COUNT);
 
@@ -118,18 +129,13 @@ public class GestureGame extends Activity implements
                                     t.cancel();
 
                                     end = true;
-                                    /*
-                                    tvFinalScore.setVisibility(View.VISIBLE);
+                                    tvGesture.setText("You lost...");
                                     tvFinalScore.setText("Final score: " + points);
 
-                                     */
                                 }
                             }
                         }, 1000,1000);
                 if (end == true) {
-                    tvGesture.setText("You lost...");
-                    tvFinalScore.setVisibility(View.VISIBLE);
-                    tvFinalScore.setText("Final score: " + points);
                     MainActivity.GAME_COUNT--;
                     MainActivity.myScore += points;
                     new Handler().postDelayed(new Runnable() {

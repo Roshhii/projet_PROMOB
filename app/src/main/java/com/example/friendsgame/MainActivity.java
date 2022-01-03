@@ -547,8 +547,25 @@ public class MainActivity extends AppCompatActivity {
 
     public void generateGames() {
         table_games[0] = randomGame(1,4);
-        table_games[1] = randomGame(1,4);
-        table_games[2] = randomGame(1,4);
+        table_games[1] = tableGamesRandom();
+        table_games[2] = tableGamesRandom();
+    }
+
+    public boolean tableGamesContains(int game) {
+        for (int tmp : table_games) {
+            if (tmp == game) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public int tableGamesRandom () {
+        int tmp = randomGame(1, 4);
+        while (tableGamesContains(tmp)) {
+            tmp = randomGame(1, 4);
+        }
+        return tmp;
     }
 
     /*

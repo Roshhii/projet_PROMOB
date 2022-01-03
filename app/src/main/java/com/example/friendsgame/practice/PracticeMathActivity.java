@@ -86,7 +86,7 @@ public class PracticeMathActivity extends AppCompatActivity {
                         }
                     } catch (NumberFormatException e) {
                         Toast.makeText(getApplicationContext(), "Please give a number", Toast.LENGTH_SHORT);
-                        Log.i("", rep + " is not a number");
+                        Log.i("ERROR INPUT MATHGAME", rep + " is not a number");
                     }
                 }
             }

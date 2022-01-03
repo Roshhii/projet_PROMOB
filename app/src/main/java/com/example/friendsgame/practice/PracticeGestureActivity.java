@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
@@ -29,7 +30,7 @@ public class PracticeGestureActivity extends Activity implements
     private static final int SWIPE_VELOCITY_THRESHOLD = 100;
     private static final int SWIPE_THRESHOLD = 100;
 
-    private TextView tvGesture, tvScore, tvFinalScore;
+    private TextView tvGesture, tvScore, tvFinalScore, titleGesture;
     private ImageView gestureBack, gestureAgain;
 
     String[] mouvements = {
@@ -61,13 +62,22 @@ public class PracticeGestureActivity extends Activity implements
         tvGesture = findViewById(R.id.tv_gesture);
         tvScore = findViewById(R.id.tv_timeGesture);
         tvFinalScore = findViewById(R.id.tv_gestureScore);
+        titleGesture = findViewById(R.id.tv_titleGesture);
         gestureAgain = findViewById(R.id.iv_gestureAgain);
         gestureBack = findViewById(R.id.iv_gestureBack);
 
-        gestureAgain.setEnabled(true);
-        gestureBack.setEnabled(true);
-        gestureAgain.setVisibility(View.VISIBLE);
-        gestureBack.setVisibility(View.VISIBLE);
+        gestureBack.setImageResource(R.drawable.arrow);
+        gestureAgain.setImageResource(R.drawable.replay);
+
+        Typeface audiowide = Typeface.createFromAsset(getAssets(),
+                "fonts/audiowide.ttf");
+        Typeface bungee_shade = Typeface.createFromAsset(getAssets(),
+                "fonts/bungee_shade.ttf");
+        titleGesture.setTypeface(bungee_shade);
+        tvFinalScore.setTypeface(audiowide);
+
+        tvFinalScore.setVisibility(View.VISIBLE);
+
 
         gestureBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -108,6 +118,7 @@ public class PracticeGestureActivity extends Activity implements
 
             @Override
             public void onFinish() {
+                tvGesture.setVisibility(View.VISIBLE);
                 mTimerRunning=false ;
                 tvScore.setText(Integer.toString(points));
                 Random generator = new Random();
@@ -136,11 +147,9 @@ public class PracticeGestureActivity extends Activity implements
                                     t.cancel();
 
                                     end = true;
-                                    /*
-                                    tvFinalScore.setVisibility(View.VISIBLE);
+
                                     tvFinalScore.setText("Final score: " + points);
 
-                                     */
                                 }
                             }
                         }, 1000,1000

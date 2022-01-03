@@ -5,7 +5,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:scrollbars="vertical"
     android:paddingHorizontal="10dp">
 
 
@@ -17,12 +16,10 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
-            android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.0"
-            app:srcCompat="@drawable/arrow"
             tools:ignore="VectorDrawableCompat" />
 
 
@@ -34,31 +31,31 @@
             android:layout_marginTop="10dp"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="10dp"
-            android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.0"
-            app:srcCompat="@drawable/replay"
             tools:ignore="VectorDrawableCompat" />
 
 
     <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:orientation="vertical"
         app:layout_constraintBottom_toTopOf="@+id/tv_gesture"
         app:layout_constraintEnd_toEndOf="parent"
+        android:paddingHorizontal="10dp"
         app:layout_constraintHorizontal_bias="0.157"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.179">
 
         <TextView
+            android:id="@+id/tv_titleGesture"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/bungee_shade"
             android:gravity="center"
             android:text="@string/text_gesture"
             android:textSize="20sp" />
@@ -67,39 +64,64 @@
             android:id="@+id/tv_timeGesture"
             android:layout_width="294dp"
             android:layout_height="108dp"
+            android:layout_marginTop="30dp"
             android:background="@drawable/bg"
             android:paddingTop="25dp"
-            android:layout_marginTop="30dp"
             android:text="0:10"
             android:textAlignment="center"
             android:textColor="@color/black"
             android:textSize="40sp" />
 
-        <TextView
-            android:id="@+id/tv_gestureScore"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:fontFamily="@font/audiowide"
-            android:textSize="18sp"
-            android:visibility="invisible" />
 
     </LinearLayout>
+
+
+    <!--<TextView
+        android:id="@+id/tv_gestureScore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/audiowide"
+        android:text="bbbbbbbbbbb"
+        android:textSize="18sp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/tv_gesture"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+        app:layout_constraintVertical_bias="0.092" />-->
+
+    <TextView
+        android:id="@+id/tv_gestureScore"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:foregroundGravity="center_horizontal"
+        android:textAlignment="center"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.157"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.499" />
 
     <TextView
         android:id="@+id/tv_gesture"
         android:layout_width="match_parent"
         android:layout_height="30dp"
         android:foregroundGravity="center_horizontal"
+        android:text="The movements will appear here"
         android:textAlignment="center"
         android:textSize="16sp"
         android:textStyle="bold"
-        android:text="The movements will appear here"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.949" />
+        app:layout_constraintVertical_bias="0.949"
+        tools:text="The movements will appear here" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -163,7 +163,7 @@ public class PracticeDiceActivity extends AppCompatActivity {
             }
         });
 
-        diceBack.setOnClickListener(new View.OnClickListener() {
+        diceAgain.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent diceGame = new Intent(getApplicationContext(), PracticeDiceActivity.class);

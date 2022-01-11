@@ -50,6 +50,10 @@
             android:name=".practice.PracticeBuzzerActivity" >
             android:parentActivityName=".PracticeActivity">
         </activity>
+        <activity
+            android:name=".practice.PracticeLuminoActivity" >
+            android:parentActivityName=".PracticeActivity">
+        </activity>
         <activity android:name=".WelcomeActivity" />
         <activity android:name=".RegisterActivity" />
         <activity android:name=".PracticeActivity"/>
@@ -83,6 +87,10 @@
         </activity>
         <activity
             android:name=".TapGame"
+            android:parentActivityName=".MainActivity">
+        </activity>
+        <activity
+            android:name=".LuminoGame"
             android:parentActivityName=".MainActivity">
         </activity>
         <activity

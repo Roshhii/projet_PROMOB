@@ -64,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
     public static String myName;
     public static int myScore = 0;
     public static Map<String, Integer> scoreGamers, stateGamers;
+    public static ArrayList<String> listGamers;
     public static boolean finished = false;
 
     public static int game, GAME_COUNT = 3;
@@ -171,6 +172,7 @@ public class MainActivity extends AppCompatActivity {
                                     sendReceive.write(name.getBytes());
                                     scoreGamers.put(str, 0);
                                     stateGamers.put(str, 0);
+                                    listGamers.add(str);
                                     System.out.println("Name reçu : " + str);
                                     System.out.println("Gamers : " + stateGamers.toString());
                                 }
@@ -390,6 +392,8 @@ public class MainActivity extends AppCompatActivity {
 
         scoreGamers = new HashMap<String, Integer>();
         stateGamers = new HashMap<String, Integer>();
+
+        listGamers = new ArrayList<String>();
     }
 
     /*
@@ -546,9 +550,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void generateGames() {
-        table_games[0] = randomGame(1,4);
-        table_games[1] = tableGamesRandom();
-        table_games[2] = tableGamesRandom();
+        table_games[0] = randomGame(1,5);
+        /*table_games[1] = tableGamesRandom();
+        table_games[2] = tableGamesRandom();*/
+        table_games[1] = randomGame(1,5);
+        table_games[2] = randomGame(1,5);
     }
 
     public boolean tableGamesContains(int game) {
@@ -561,9 +567,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public int tableGamesRandom () {
-        int tmp = randomGame(1, 4);
+        int tmp = randomGame(1, 5);
         while (tableGamesContains(tmp)) {
-            tmp = randomGame(1, 4);
+            tmp = randomGame(1, 5);
         }
         return tmp;
     }

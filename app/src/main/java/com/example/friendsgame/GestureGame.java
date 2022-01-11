@@ -89,6 +89,10 @@ public class GestureGame extends Activity implements
             count++;
         }
 
+        if (end = true) {
+            sendScore();
+        }
+
     }
 
 
@@ -103,86 +107,98 @@ public class GestureGame extends Activity implements
             @Override
             public void onFinish() {
                 mTimerRunning=false ;
-                tvScore.setText(Integer.toString(points));
-                Random generator = new Random();
-
-                Timer t = new java.util.Timer();
-                t.schedule(
-                        new java.util.TimerTask() {
-                            @Override
-                            public void run() {
-                                task=generator.nextInt(mouvements.length);
-                                tvGesture.setText(mouvements[task]);
-                                try {
-                                    Thread.sleep(1000);
-                                } catch (InterruptedException e) {
-                                    e.printStackTrace();
-                                }
-                                if(done==mouvements[task]){
-                                    System.out.println(+1);
-                                    points++;
-                                    tvScore.setText(Integer.toString(points));
-                                }
-                                else{
-                                    //showScore(points);
-                                    //je n'arrive pas à afficher le score ici
-                                    t.cancel();
-
-                                    end = true;
-                                    tvGesture.setText("You lost...");
-                                    tvFinalScore.setText("Final score: " + points);
-
-                                }
-                            }
-                        }, 1000,1000);
-                if (end == true) {
-                    MainActivity.GAME_COUNT--;
-                    MainActivity.myScore += points;
-                    new Handler().postDelayed(new Runnable() {
-                        @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-                        @Override
-                        public void run() {
-                            if (MainActivity.devicesConnected.size() == 0 ) {
-                                if (MainActivity.GAME_COUNT != 0) {
-                                    Intent loading = new Intent(getApplicationContext(), LoadingScreen.class);
-                                    startActivity(loading);
-                                } else {
-                                    //Jeu terminé
-                                    MainActivity.reset();
-                                    Intent victory = new Intent(getApplicationContext(), VictoryScreen.class);
-                                    startActivity(victory);
-                                }
-                                finish();
-                            } else {
-                                if (MainActivity.GAME_COUNT != 0) {
-                                    String msg = "{ \"type\": \"game\", \"score\": "+ String.valueOf(points) +", \"name\": "+MainActivity.myName +" }";
-                                    MainActivity.sendReceive.write(msg.getBytes());
-                                    Intent loading = new Intent(getApplicationContext(), LoadingScreen.class);
-                                    startActivity(loading);
-                                    finish();
-                                } else {
-                                    //Jeu terminé et on est plusieurs
-                                    MainActivity.finished = true;
-                                    String msg = "{ \"type\": \"finished\", \"score\": "+ String.valueOf(points) +", \"name\": "+MainActivity.myName +" }";
-                                    MainActivity.sendReceive.write(msg.getBytes());
-                                    if (MainActivity.allFinished()) {
-                                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                                            MainActivity.determineRanking(getApplicationContext());
-                                        }
-                                        Intent finished = new Intent(getApplicationContext(), FinishedScreen.class);
-                                        startActivity(finished);
-                                        finish();
-                                    }
-                                }
-                            }
-                        }
-                    }, 5000);
-                }
+                updateGesture();
 
             }
         }.start();
+    }
+
+    public void updateGesture() {
+        tvScore.setText(Integer.toString(points));
+        Random generator = new Random();
+        Timer t = new java.util.Timer();
+        t.schedule(
+                new java.util.TimerTask() {
+                    @Override
+                    public void run() {
+                        task=generator.nextInt(mouvements.length);
+                        tvGesture.setText(mouvements[task]);
+                        try {
+                            Thread.sleep(1000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        if(done==mouvements[task]){
+                            System.out.println(+1);
+                            points++;
+                            tvScore.setText(Integer.toString(points));
+                        }
+                        else{
+                            //showScore(points);
+                            //je n'arrive pas à afficher le score ici
+                            t.cancel();
+
+                            System.out.println("pas résussi");
+
+                            end = true;
+                            tvGesture.setText("You lost...");
+                            tvFinalScore.setText("Final score: " + points);
+                            return;
+
+
+                        }
+                    }
+                }, 1000,1000
+        );
+        System.out.println("après time");
 
     }
+
+    private void sendScore() {
+        System.out.println("passé dans le end");
+        MainActivity.GAME_COUNT--;
+        MainActivity.myScore += points;
+        new Handler().postDelayed(new Runnable() {
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+            @Override
+            public void run() {
+                if (MainActivity.devicesConnected.size() == 0 ) {
+                    if (MainActivity.GAME_COUNT != 0) {
+                        Intent loading = new Intent(getApplicationContext(), LoadingScreen.class);
+                        startActivity(loading);
+                    } else {
+                        //Jeu terminé
+                        MainActivity.reset();
+                        Intent victory = new Intent(getApplicationContext(), VictoryScreen.class);
+                        startActivity(victory);
+                    }
+                    finish();
+                } else {
+                    if (MainActivity.GAME_COUNT != 0) {
+                        String msg = "{ \"type\": \"game\", \"score\": "+ String.valueOf(points) +", \"name\": "+MainActivity.myName +" }";
+                        MainActivity.sendReceive.write(msg.getBytes());
+                        Intent loading = new Intent(getApplicationContext(), LoadingScreen.class);
+                        startActivity(loading);
+                        finish();
+                    } else {
+                        //Jeu terminé et on est plusieurs
+                        MainActivity.finished = true;
+                        String msg = "{ \"type\": \"finished\", \"score\": "+ String.valueOf(points) +", \"name\": "+MainActivity.myName +" }";
+                        MainActivity.sendReceive.write(msg.getBytes());
+                        if (MainActivity.allFinished()) {
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                                MainActivity.determineRanking(getApplicationContext());
+                            }
+                            Intent finished = new Intent(getApplicationContext(), FinishedScreen.class);
+                            startActivity(finished);
+                            finish();
+                        }
+                    }
+                }
+            }
+        }, 5000);
+    }
+
     public void updateCountdownText (){
         int minutes = (int) mTimeLeft/1000/60 ;
         int seconds = (int) (mTimeLeft/1000)%60 ;

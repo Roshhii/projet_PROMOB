@@ -12,7 +12,7 @@ public class SharedPref {
 
     private static SharedPref instance = null;
 
-    private static final String sharedPreferencesName = "kevinSharedPref";
+    private static final String sharedPreferencesName = "promobSharedPref";
 
     private SharedPref() {
     }

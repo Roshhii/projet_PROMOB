@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import com.example.friendsgame.DiceGame;
 import com.example.friendsgame.GestureGame;
+import com.example.friendsgame.LuminoGame;
 import com.example.friendsgame.MainActivity;
 import com.example.friendsgame.MathGame;
 import com.example.friendsgame.R;
@@ -76,6 +77,7 @@ public class LoadingScreen extends AppCompatActivity {
                     2 : GestureGame
                     3 : TapGame
                     4 : MathGame
+                    5 : LuminoGame
                      */
                     case 1 :
                         Intent diceActivity = new Intent(getApplicationContext(), DiceGame.class);
@@ -83,10 +85,10 @@ public class LoadingScreen extends AppCompatActivity {
                         finish();
                         break;
                     case 2 :
-                        Intent gestureActivity = new Intent(getApplicationContext(), GestureGame.class);
+                        /*Intent gestureActivity = new Intent(getApplicationContext(), GestureGame.class);
                         startActivity(gestureActivity);
                         finish();
-                        break;
+                        break;*/
                     case 3 :
                         Intent tapActivity = new Intent(getApplicationContext(), TapGame.class);
                         startActivity(tapActivity);
@@ -95,6 +97,11 @@ public class LoadingScreen extends AppCompatActivity {
                     case 4 :
                         Intent mathActivity = new Intent(getApplicationContext(), MathGame.class);
                         startActivity(mathActivity);
+                        finish();
+                        break;
+                    case 5 :
+                        Intent brightActivity = new Intent(getApplicationContext(), LuminoGame.class);
+                        startActivity(brightActivity);
                         finish();
                         break;
                 }

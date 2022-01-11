@@ -11,11 +11,12 @@ import androidx.cardview.widget.CardView;
 import com.example.friendsgame.practice.PracticeBuzzerActivity;
 import com.example.friendsgame.practice.PracticeDiceActivity;
 import com.example.friendsgame.practice.PracticeGestureActivity;
+import com.example.friendsgame.practice.PracticeLuminoActivity;
 import com.example.friendsgame.practice.PracticeMathActivity;
 
 public class PracticeActivity extends AppCompatActivity {
 
-    CardView cvDice, cvMath, cvBuzzer, cvGesture;
+    CardView cvDice, cvMath, cvBuzzer, cvGesture, cvLumino;
     ImageView back;
 
     @Override
@@ -27,6 +28,7 @@ public class PracticeActivity extends AppCompatActivity {
         cvDice = findViewById(R.id.cv_practiceDice);
         cvGesture = findViewById(R.id.cv_practiceGesture);
         cvMath = findViewById(R.id.cv_practiceMath);
+        cvLumino = findViewById(R.id.cv_practiceLumino);
         back = findViewById(R.id.iv_practiceBack);
 
         back.setOnClickListener(new View.OnClickListener() {
@@ -66,6 +68,14 @@ public class PracticeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent game = new Intent(getApplicationContext(), PracticeBuzzerActivity.class);
+                startActivity(game);
+                finish();
+            }
+        });
+        cvLumino.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent game = new Intent(getApplicationContext(), PracticeLuminoActivity.class);
                 startActivity(game);
                 finish();
             }

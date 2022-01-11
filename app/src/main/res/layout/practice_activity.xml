@@ -7,12 +7,11 @@
     android:layout_width="match_parent">
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:paddingHorizontal="15dp"
         android:scrollbars="vertical"
-        android:layout_gravity="center_vertical"
         android:orientation="vertical"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
 
         <ImageView
@@ -193,6 +192,47 @@
                     android:layout_marginBottom="50dp"
                     android:textSize="20sp"
                     android:text="Buzzer Game"/>
+
+            </LinearLayout>
+
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cv_practiceLumino"
+            style="@style/cardViewStyle"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    app:srcCompat="@drawable/brightness" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/alfa_slab_one"
+                    android:gravity="center_horizontal"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="50dp"
+                    android:layout_marginBottom="50dp"
+                    android:textSize="20sp"
+                    android:text="Brightness Game"/>
 
             </LinearLayout>
 

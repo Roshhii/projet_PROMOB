@@ -24,4 +24,5 @@
     <string name="password_cannot_empty">Password cannot be empty</string>
     <string name="email_cannot_empty">Email cannot be empty</string>
     <string name="email_not_valid">Email must be valid</string>
+    <string name="text_lumino">Try to get the highest brightness in 10 seconds.</string>
 </resources>

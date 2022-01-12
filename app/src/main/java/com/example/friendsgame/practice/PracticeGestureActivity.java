@@ -132,7 +132,8 @@ public class PracticeGestureActivity extends Activity implements
                             @Override
                             public void run() {
                                 task=generator.nextInt(mouvements.length);
-                                tvGesture.setText(mouvements[task]);
+                                Toast.makeText(getApplicationContext(), mouvements[task], Toast.LENGTH_SHORT).show();
+                                //tvGesture.setText(mouvements[task]);
                                 try {
                                     Thread.sleep(1000);
                                 } catch (InterruptedException e) {
@@ -144,14 +145,16 @@ public class PracticeGestureActivity extends Activity implements
                                     tvScore.setText(Integer.toString(points));
                                 }
                                 else{
-                                    tvGesture.setText("You lost...");
+                                    Toast.makeText(getApplicationContext(), "You lost...", Toast.LENGTH_SHORT).show();
+                                    //tvGesture.setText("You lost...");
                                     //showScore(points);
                                     //je n'arrive pas à afficher le score ici
                                     t.cancel();
 
                                     end = true;
 
-                                    tvFinalScore.setText("Final score: " + points);
+                                    Toast.makeText(getApplicationContext(), "Final score: " + points, Toast.LENGTH_SHORT).show();
+                                    //tvFinalScore.setText("Final score: " + points);
 
                                 }
                             }

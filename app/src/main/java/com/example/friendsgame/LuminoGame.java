@@ -101,7 +101,7 @@ public class LuminoGame extends AppCompatActivity {
                     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
                     @Override
                     public void run() {
-                        MainActivity.myScore += lmax;
+                        MainActivity.myScore += (int) lmax;
                         if (MainActivity.devicesConnected.size() == 0 ) {
                             if (MainActivity.GAME_COUNT != 0) {
                                 Intent loading = new Intent(getApplicationContext(), LoadingScreen.class);
@@ -115,7 +115,7 @@ public class LuminoGame extends AppCompatActivity {
                             finish();
                         } else {
                             if (MainActivity.GAME_COUNT != 0) {
-                                String msg = "{ \"type\": \"game\", \"score\": "+ String.valueOf(lmax) +", \"name\": "+MainActivity.myName +" }";
+                                String msg = "{ \"type\": \"game\", \"score\": "+ String.valueOf((int) lmax) +", \"name\": "+MainActivity.myName +" }";
                                 MainActivity.sendReceive.write(msg.getBytes());
                                 Intent loading = new Intent(getApplicationContext(), LoadingScreen.class);
                                 startActivity(loading);
@@ -123,7 +123,7 @@ public class LuminoGame extends AppCompatActivity {
                             } else {
                                 //Jeu terminé et on est plusieurs
                                 MainActivity.finished = true;
-                                String msg = "{ \"type\": \"finished\", \"score\": "+ String.valueOf(lmax) +", \"name\": "+MainActivity.myName +" }";
+                                String msg = "{ \"type\": \"finished\", \"score\": "+ String.valueOf((int) lmax) +", \"name\": "+MainActivity.myName +" }";
                                 MainActivity.sendReceive.write(msg.getBytes());
                                 if (MainActivity.allFinished()) {
                                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {

@@ -80,28 +80,24 @@ public class LoadingScreen extends AppCompatActivity {
                     5 : GestureGame
                      */
                     case 1 :
-                        /*Intent diceActivity = new Intent(getApplicationContext(), DiceGame.class);
+                        Intent diceActivity = new Intent(getApplicationContext(), DiceGame.class);
                         startActivity(diceActivity);
                         finish();
-                        break;*/
+                        break;
                     case 2 :
-                        /*Intent gestureActivity = new Intent(getApplicationContext(), LuminoGame.class);
+                        Intent gestureActivity = new Intent(getApplicationContext(), LuminoGame.class);
                         startActivity(gestureActivity);
                         finish();
-                        break;*/
+                        break;
                     case 3 :
-                        /*Intent tapActivity = new Intent(getApplicationContext(), TapGame.class);
+                    case 5 :
+                        Intent tapActivity = new Intent(getApplicationContext(), TapGame.class);
                         startActivity(tapActivity);
                         finish();
-                        break;*/
+                        break;
                     case 4 :
-                        /*Intent mathActivity = new Intent(getApplicationContext(), MathGame.class);
+                        Intent mathActivity = new Intent(getApplicationContext(), MathGame.class);
                         startActivity(mathActivity);
-                        finish();
-                        break;*/
-                    case 5 :
-                        Intent brightActivity = new Intent(getApplicationContext(), GestureGame.class);
-                        startActivity(brightActivity);
                         finish();
                         break;
                 }

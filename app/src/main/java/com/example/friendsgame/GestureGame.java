@@ -58,6 +58,17 @@ public class GestureGame extends Activity implements
     String done ;
     private boolean end=false;
 
+    public Thread thread = new Thread() {
+        public void run() {
+            GestureGame.this.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    sendScore();
+                }
+            });
+        }
+    };
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,10 +98,6 @@ public class GestureGame extends Activity implements
         }
         if(mTimerRunning) {
             count++;
-        }
-
-        if (end = true) {
-            sendScore();
         }
 
     }
@@ -136,15 +143,16 @@ public class GestureGame extends Activity implements
                         else{
                             //showScore(points);
                             //je n'arrive pas à afficher le score ici
+                            tvGesture.setText("You lost...");
+                            tvFinalScore.setText("Final score: " + points);
+                            thread.start();
                             t.cancel();
 
                             System.out.println("pas résussi");
 
                             end = true;
-                            tvGesture.setText("You lost...");
-                            tvFinalScore.setText("Final score: " + points);
-                            return;
 
+                            return;
 
                         }
                     }

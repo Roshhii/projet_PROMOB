@@ -2,8 +2,8 @@
     <!-- Base application theme. -->
     <style name="Theme.FriendsGame" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_500</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
+        <item name="colorPrimary">@color/orange_friendsgame</item>
+        <item name="colorPrimaryVariant">@color/orange_friendsgame</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/teal_200</item>
@@ -21,7 +21,7 @@
         <item name="cardBackgroundColor">@color/white</item>
     </style>
         <style name="btnStyle" parent="Widget.MaterialComponents.Button">
-            <item name="backgroundTint">@color/purple_500</item>
+            <item name="backgroundTint">@color/orange_friendsgame</item>
             <item name="cornerRadius">@dimen/btn_radius</item>
             <item name="android:layout_height">@dimen/btn_height</item>
         </style>

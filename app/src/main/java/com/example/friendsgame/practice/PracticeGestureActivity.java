@@ -14,6 +14,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.friendsgame.GestureGame;
 import com.example.friendsgame.PracticeActivity;
 import com.example.friendsgame.R;
 
@@ -51,6 +53,7 @@ public class PracticeGestureActivity extends Activity implements
     int task ;
     String done ;
     private boolean end=false;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

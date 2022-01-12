@@ -38,14 +38,30 @@
         tools:ignore="VectorDrawableCompat" />
 
 
+    <!--<TextView
+        android:id="@+id/tv_gestureScore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/audiowide"
+        android:text="bbbbbbbbbbb"
+        android:textSize="18sp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/tv_gesture"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+        app:layout_constraintVertical_bias="0.092" />-->
+
     <LinearLayout
+        android:id="@+id/linearLayout2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:orientation="vertical"
-        android:paddingHorizontal="10dp"
         app:layout_constraintBottom_toTopOf="@+id/tv_Maxlumino"
         app:layout_constraintEnd_toEndOf="parent"
+        android:paddingHorizontal="10dp"
         app:layout_constraintHorizontal_bias="0.157"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -63,10 +79,10 @@
             android:id="@+id/tv_Timelumino"
             android:layout_width="294dp"
             android:layout_height="108dp"
+            android:layout_marginTop="30dp"
             android:background="@drawable/bg"
             android:paddingTop="25dp"
             android:text="0:10"
-            android:layout_marginTop="30dp"
             android:textAlignment="center"
             android:textColor="@color/black"
             android:textSize="40sp" />
@@ -75,58 +91,35 @@
     </LinearLayout>
 
 
-    <!--<TextView
-        android:id="@+id/tv_gestureScore"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/audiowide"
-        android:text="bbbbbbbbbbb"
-        android:textSize="18sp"
-        android:visibility="invisible"
-        app:layout_constraintBottom_toTopOf="@+id/tv_gesture"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
-        app:layout_constraintVertical_bias="0.092" />-->
-
     <TextView
         android:id="@+id/tv_lumino"
-        android:layout_width="wrap_content"
-        android:layout_height="55dp"
-        android:layout_marginHorizontal="10dp"
-        android:layout_marginStart="107dp"
-        android:layout_marginEnd="108dp"
-        android:fontFamily="@font/audiowide"
-        android:foregroundGravity="center"
-        android:gravity="center"
-        android:text="378"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:foregroundGravity="center_horizontal"
         android:textAlignment="center"
-        android:textSize="50sp"
+        android:textSize="18sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/tv_Maxlumino"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.505"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.67" />
+        app:layout_constraintHorizontal_bias="0.842"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
+        app:layout_constraintVertical_bias="0.494" />
 
     <TextView
         android:id="@+id/tv_Maxlumino"
-        android:layout_width="wrap_content"
-        android:layout_height="55dp"
-        android:layout_marginHorizontal="10dp"
-        android:layout_marginStart="107dp"
-        android:layout_marginEnd="108dp"
-        android:foregroundGravity="center"
-        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:foregroundGravity="center_horizontal"
         android:text="Maximum brightness: "
         android:textAlignment="center"
-        android:textSize="24sp"
-        android:fontFamily="@font/audiowide"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.906" />
+        app:layout_constraintVertical_bias="0.949"
+        tools:text="Maximum brightness: " />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
